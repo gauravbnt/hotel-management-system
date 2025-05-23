@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -36,15 +35,15 @@ public class GuestController {
         return guestService.getAllGuest();
     }
 
-    @GetMapping("/get_guest_by_email_and_phone_number")//get_guest
-    public Guest getGuestById(@RequestParam String email,@RequestParam String phoneNumber){
-    Guest gue=  guestService.getGuestByEmailAndPhoneNumber(email,phoneNumber);
-        return gue;
+    @GetMapping("/get_guest_by_email/{email}")//get_guest
+    public Guest getGuestById(@PathVariable String email){
+      return guestService.getGuestByEmail(email);
+    
     }
 
-    @PutMapping("/update_guest_by_email_and_phone_number")
-    public Guest updateGuestById(@RequestBody Guest guest, @RequestParam String email, @RequestParam String phoneNumber){
-        return guestService.updateGuestByEmailAndPhoneNumber(guest, email,phoneNumber);
+    @PutMapping("/update_guest_by_email/{email}")
+    public Guest updateGuestById(@RequestBody Guest guest,@PathVariable String email){
+        return guestService.updateGuestByEmail(guest, email);
     }
 
     @DeleteMapping("/delete_guest_by_email/{email}")

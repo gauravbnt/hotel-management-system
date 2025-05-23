@@ -34,7 +34,7 @@ public class Room {
     private RoomType roomType;
 
     private BigDecimal pricePerNight;
-    private Boolean isAvailable;
+    private Boolean isAvailable=true;
     private Integer floorNumber;
     private String description;
 

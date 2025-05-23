@@ -12,6 +12,7 @@ import com.example.hms.hotel_management_system.service.GuestService;
 
 @Service
 public class GuestServiceImpl implements GuestService {
+    
     @Autowired
     GuestRepository guestRepository;
 
@@ -23,13 +24,12 @@ public class GuestServiceImpl implements GuestService {
         return guestRepository.findAll();
     }
 
-    public Guest getGuestByEmailAndPhoneNumber(String email,String phoneNumber){
-        return guestRepository.findByEmailAndPhoneNumber(email,phoneNumber);
-    
+    public Guest getGuestByEmail(String email){
+        return guestRepository.findByEmail(email);
     }
 
-    public Guest updateGuestByEmailAndPhoneNumber(Guest updateGuest,String email,String phoneNumber){
-        Guest guest= getGuestByEmailAndPhoneNumber(email,phoneNumber);
+    public Guest updateGuestByEmail(Guest updateGuest,String email){
+        Guest guest= getGuestByEmail(email);
         guest.setAddress(updateGuest.getAddress());
         guest.setEmail(updateGuest.getEmail());
         guest.setFirstName(updateGuest.getFirstName());
