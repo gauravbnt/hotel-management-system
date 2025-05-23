@@ -1,12 +1,17 @@
 package com.example.hms.hotel_management_system.entity;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +19,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Guest {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String firstName;
@@ -25,7 +31,15 @@ public class Guest {
     @Column(unique = true)
     private String email;
     
+    @Column(unique = true)
     private String phoneNumber;
+    
     private String address;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
+
+    @OneToMany(mappedBy ="guest")
+    List<Booking> booking;
 }
