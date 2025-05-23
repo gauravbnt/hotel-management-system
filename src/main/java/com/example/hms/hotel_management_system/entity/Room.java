@@ -1,15 +1,19 @@
 package com.example.hms.hotel_management_system.entity;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import com.example.hms.hotel_management_system.enums.RoomType;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +21,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Room {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    
+    @Column(unique = true)
     private String roomNumber;
 
     @Enumerated(EnumType.STRING)
@@ -30,5 +37,8 @@ public class Room {
     private Boolean isAvailable;
     private Integer floorNumber;
     private String description;
+
+    @OneToMany(mappedBy ="room")
+    List<Booking> booking;
 
 }
