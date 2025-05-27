@@ -26,13 +26,20 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public Booking createBooking(Booking booking) {
         Room room = roomRepository.findRoomByRoomNumber(booking.getRoom().getRoomNumber());
-
         Guest guest = guestRepository.findByEmail(booking.getGuest().getEmail());
+        try{
+            
+            if (!room.getIsAvailable()) {
 
-        if (!room.getIsAvailable()) {
-
-            throw new IllegalStateException("Room " + room.getRoomNumber() + " is already booked.");
+                throw new IllegalStateException("Room " + room.getRoomNumber() + " is already booked.");
+            }
+           
         }
+        catch (IllegalStateException e) {
+            System.err.println("Error creating booking: " + e.getMessage());
+            return null;
+
+        }   
         booking.setRoom(room);
         booking.setGuest(guest);
         room.setIsAvailable(false);

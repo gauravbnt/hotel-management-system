@@ -5,12 +5,9 @@ import java.sql.Timestamp;
 import java.sql.Date;
 import java.util.UUID;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
-
 import com.example.hms.hotel_management_system.enums.BookingStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -50,11 +47,12 @@ public class Booking {
 
     @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn(name="guest_id")
-    @JsonBackReference
+    @JsonBackReference("guest-booking")
     private Guest guest;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="room_id")
+    @JsonBackReference("room-booking")
     private Room room;
 
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -46,6 +45,6 @@ public class Guest {
     private Timestamp createdAt;
 
     @OneToMany(mappedBy ="guest",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("guest-booking")
     List<Booking> booking;
 }

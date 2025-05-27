@@ -6,7 +6,6 @@ import java.util.UUID;
 import com.example.hms.hotel_management_system.enums.Role;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
