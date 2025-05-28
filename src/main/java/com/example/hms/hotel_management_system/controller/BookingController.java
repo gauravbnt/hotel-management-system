@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.hms.hotel_management_system.entity.Booking;
+import com.example.hms.hotel_management_system.DTO.BookingDTO;
 import com.example.hms.hotel_management_system.service.BookingService;
 
 
@@ -18,7 +18,7 @@ public class BookingController {
     private BookingService bookingService;
 
     @PostMapping("/addBooking")
-    public Booking addBooking(@RequestBody Booking booking){
-        return bookingService.createBooking(booking);
+    public BookingDTO addBooking(@RequestBody BookingDTO bookingDTO){
+        return bookingService.createBooking(bookingDTO);
     }
 }

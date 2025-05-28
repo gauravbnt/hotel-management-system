@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.hms.hotel_management_system.DTO.BookingDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Guest;
 import com.example.hms.hotel_management_system.entity.Room;
@@ -24,9 +25,9 @@ public class BookingServiceImpl implements BookingService {
     GuestRepository guestRepository;
 
     @Transactional
-    public Booking createBooking(Booking booking) {
-        Room room = roomRepository.findRoomByRoomNumber(booking.getRoom().getRoomNumber());
-        Guest guest = guestRepository.findByEmail(booking.getGuest().getEmail());
+    public BookingDTO createBooking(BookingDTO bookingDTO) {
+        Room room = roomRepository.findRoomByRoomNumber(bookingDTO.getRoomNumber());
+        Guest guest = guestRepository.findByEmail(bookingDTO.getEmail());
         try{
             
             if (!room.getIsAvailable()) {
@@ -40,10 +41,28 @@ public class BookingServiceImpl implements BookingService {
             return null;
 
         }   
+        Booking booking = new Booking();
+        booking.setCheckInDate(bookingDTO.getCheckInDate());
+        booking.setCheckOutDate(bookingDTO.getCheckOutDate());
+        booking.setBookingStatus(bookingDTO.getBookingStatus());
+        booking.setTotalAmount(bookingDTO.getTotalAmount());
         booking.setRoom(room);
         booking.setGuest(guest);
+
         room.setIsAvailable(false);
-        return bookingRepository.save(booking);
+            
+        Booking savedBooking = bookingRepository.save(booking);
+        BookingDTO responseDTO = new BookingDTO();
+        
+        responseDTO.setId(savedBooking.getId());
+        responseDTO.setCheckInDate(savedBooking.getCheckInDate());
+        responseDTO.setCheckOutDate(savedBooking.getCheckOutDate());
+        responseDTO.setBookingStatus(savedBooking.getBookingStatus());
+        responseDTO.setTotalAmount(savedBooking.getTotalAmount());
+        responseDTO.setEmail(savedBooking.getGuest().getEmail());
+        responseDTO.setRoomNumber(savedBooking.getRoom().getRoomNumber());
+
+        return responseDTO; 
     }
 
 }

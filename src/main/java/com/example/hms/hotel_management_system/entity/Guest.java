@@ -6,11 +6,10 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,7 +43,7 @@ public class Guest {
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy ="guest",cascade = CascadeType.ALL)
-    @JsonManagedReference("guest-booking")
+    @OneToMany(mappedBy ="guest",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   // @JsonManagedReference("guest-booking")
     List<Booking> booking;
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import com.example.hms.hotel_management_system.enums.PaymentMethod;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -33,4 +32,5 @@ public class Payment {
 
     private String transactionId;
 
+    
 }

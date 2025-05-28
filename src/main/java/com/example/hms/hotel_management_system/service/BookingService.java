@@ -1,8 +1,8 @@
 package com.example.hms.hotel_management_system.service;
 
 
-import com.example.hms.hotel_management_system.entity.Booking;
+import com.example.hms.hotel_management_system.DTO.BookingDTO;
 
 public interface BookingService {
-    public Booking createBooking(Booking booking); 
+    public BookingDTO createBooking(BookingDTO bookingDTO); 
 }
