@@ -12,7 +12,10 @@ public interface BookingMapper {
 
     @Mapping(source = "guest.email", target = "email")
     @Mapping(source = "room.roomNumber", target = "roomNumber")
+    @Mapping(source = "booking.createdAt", target = "createdAt")
+    @Mapping(source = "room.isAvailable", target = "isAvailable")
     BookingDTO toDTO(Booking booking);
+    
 
     @Mapping(target = "guest", ignore = true) 
     @Mapping(target = "room", ignore = true)  

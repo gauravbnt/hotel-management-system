@@ -12,4 +12,5 @@ import com.example.hms.hotel_management_system.entity.Room;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking ,UUID> {
     List<Booking> findByRoom(Room room);
+    Booking findByRoom_RoomNumberAndGuest_Email(String roomNumber, String email);
 }

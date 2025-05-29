@@ -1,6 +1,7 @@
 package com.example.hms.hotel_management_system.DTO;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.sql.Date;
 import java.util.UUID;
 
@@ -22,5 +23,7 @@ public class BookingDTO {
     private BigDecimal totalAmount;
     private String email;
     private String roomNumber;
+    private Boolean isAvailable;
+    private Timestamp createdAt; 
 
 }
