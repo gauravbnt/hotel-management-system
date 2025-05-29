@@ -37,6 +37,11 @@ public class RoomController {
         return roomService.getAvailableRooms(isAvailable);
     }
 
+    @GetMapping("/getAll")
+    public List<Room> getAll(){
+        return roomService.getAllRooms();
+    }
+
     @PutMapping("updateRoomByRoomNumber/{roomNumber}")
     public Room updateRoomByRoomNumber(@RequestBody Room room,@PathVariable String roomNumber){
         return roomService.updateRoomByRoomNumber(room,roomNumber);

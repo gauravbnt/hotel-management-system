@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.example.hms.hotel_management_system.enums.RoomType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,7 +42,7 @@ public class Room {
     private String description;
 
     @OneToMany(mappedBy ="room", cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-  //  @JsonManagedReference("room-booking")
+   // @JsonManagedReference("room-booking")
     List<Booking> booking;
 
 }

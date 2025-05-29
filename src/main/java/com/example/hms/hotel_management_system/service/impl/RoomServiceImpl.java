@@ -24,6 +24,9 @@ public class RoomServiceImpl implements RoomService{
     public List<Room> getAvailableRooms(Boolean isAvailable){
         return roomRepository.findByIsAvailable(isAvailable);
     }
+    public List<Room> getAllRooms(){
+        return roomRepository.findAll();
+    }
 
     public Room updateRoomByRoomNumber(Room room,String roomNumber){
         Room r1= getRoomByRoomNumber(roomNumber);

@@ -9,5 +9,6 @@ public interface RoomService {
     public Room getRoomByRoomNumber(String roomNumber);
     public List<Room> getAvailableRooms(Boolean isAvailable);
     public Room updateRoomByRoomNumber(Room room,String roomNumber);
+    public List<Room> getAllRooms();
 
 }

@@ -29,24 +29,24 @@ public class GuestController {
         return guestService.createGuest(guest);
     }
     
-    @GetMapping("/get_all_guest")
+    @GetMapping("/getAll")
     public List<Guest> getAllGuest()
     {
         return guestService.getAllGuest();
     }
 
-    @GetMapping("/get_guest_by_email/{email}")//get_guest
+    @GetMapping("/getByEmail/{email}")//get_guest
     public Guest getGuestById(@PathVariable String email){
       return guestService.getGuestByEmail(email);
     
     }
 
-    @PutMapping("/update_guest_by_email/{email}")
+    @PutMapping("/updateByEmail/{email}")
     public Guest updateGuestById(@RequestBody Guest guest,@PathVariable String email){
         return guestService.updateGuestByEmail(guest, email);
     }
 
-    @DeleteMapping("/delete_guest_by_email/{email}")
+    @DeleteMapping("/deleteByEmail/{email}")
     public String deleteGuestByEmail(@PathVariable String email)
     {
         guestService.deleteGuestByEmail(email);
