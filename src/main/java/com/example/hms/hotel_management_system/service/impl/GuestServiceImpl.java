@@ -2,34 +2,54 @@ package com.example.hms.hotel_management_system.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.hms.hotel_management_system.entity.Guest;
+import com.example.hms.hotel_management_system.exception.GuestAlreadyExistsException;
+import com.example.hms.hotel_management_system.exception.GuestNotFoundException;
 import com.example.hms.hotel_management_system.repository.GuestRepository;
 import com.example.hms.hotel_management_system.service.GuestService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class GuestServiceImpl implements GuestService {
     
-    @Autowired
-    GuestRepository guestRepository;
+    
+    final GuestRepository guestRepository;
 
     public Guest createGuest(Guest guest){
+        if (guestRepository.findByEmail(guest.getEmail()) != null) {
+            throw new GuestAlreadyExistsException("Guest already exists with email: " + guest.getEmail());
+        }
         return guestRepository.save(guest);
     }
 
     public List<Guest> getAllGuest(){
-        return guestRepository.findAll();
+
+        List<Guest>guests=guestRepository.findAll();
+        if (guests.isEmpty()) {
+            throw new GuestNotFoundException("No guests found.");
+        }
+        return guests;
+
     }
 
     public Guest getGuestByEmail(String email){
-        return guestRepository.findByEmail(email);
+        Guest guest = guestRepository.findByEmail(email);
+        if (guest == null) {
+            throw new GuestNotFoundException("Guest not found with email: " + email);
+        }
+        return guest;    
     }
 
     public Guest updateGuestByEmail(Guest updateGuest,String email){
         Guest guest= getGuestByEmail(email);
+        if (guest == null) {
+            throw new GuestNotFoundException("Cannot update. Guest not found with email: " + email);
+        }
         guest.setAddress(updateGuest.getAddress());
         guest.setEmail(updateGuest.getEmail());
         guest.setFirstName(updateGuest.getFirstName());
@@ -41,6 +61,10 @@ public class GuestServiceImpl implements GuestService {
     
     @Transactional
     public void deleteGuestByEmail(String email){
-        guestRepository.deleteByEmail(email);
+        Guest guest = guestRepository.findByEmail(email);
+        if (guest == null) {
+            throw new GuestNotFoundException("Cannot delete. Guest not found with email: " + email);
+        }
+        guestRepository.delete(guest);
     }
 }   

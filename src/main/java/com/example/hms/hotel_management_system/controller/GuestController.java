@@ -2,7 +2,6 @@ package com.example.hms.hotel_management_system.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,46 +10,100 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.hms.hotel_management_system.entity.Guest;
+import com.example.hms.hotel_management_system.exception.GuestAlreadyExistsException;
+import com.example.hms.hotel_management_system.exception.GuestNotFoundException;
 import com.example.hms.hotel_management_system.service.GuestService;
+
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/guest")
 public class GuestController {
 
-    @Autowired
-    private GuestService guestService;
+    private final GuestService guestService;
 
-    @PostMapping("/addGuest")
+    @PostMapping("/add_guest")
     public Guest addGuest(@RequestBody Guest guest){
-        return guestService.createGuest(guest);
+        try {
+            return guestService.createGuest(guest);   
+        }
+        catch (GuestAlreadyExistsException e) {
+            System.out.println("Guest Already Exists....!");
+            return null;
+        }
+        catch(Exception e){
+            System.out.println("Internal Server Error.....");
+            return null;
+        }
     }
     
-    @GetMapping("/getAll")
+    @GetMapping("/get_all")
     public List<Guest> getAllGuest()
     {
-        return guestService.getAllGuest();
+        try{
+            return guestService.getAllGuest();
+        }
+        catch(GuestNotFoundException e){
+            System.out.println("Guests Not found");
+            return null;
+        }
+        catch(Exception e){
+            System.out.println("Internal Server Error.....");
+            return null;
+        }
     }
 
-    @GetMapping("/getByEmail/{email}")//get_guest
+    @GetMapping("/get_by_email/{email}")
     public Guest getGuestById(@PathVariable String email){
-      return guestService.getGuestByEmail(email);
-    
+        try{
+            return guestService.getGuestByEmail(email);
+        }
+        catch(GuestNotFoundException e){
+            System.out.println("Guests Not found with email "+email);
+            return null;
+        }
+        catch(Exception e){
+            System.out.println("Internal Server Error.....");
+            return null;
+        }    
     }
 
-    @PutMapping("/updateByEmail/{email}")
+    @PutMapping("/update_by_email/{email}")
     public Guest updateGuestById(@RequestBody Guest guest,@PathVariable String email){
-        return guestService.updateGuestByEmail(guest, email);
+        try{
+            return guestService.updateGuestByEmail(guest, email);
+        }
+        catch(GuestNotFoundException e){
+            System.out.println("Guests Not found with email "+email);
+            return null;
+        }
+        catch(Exception e){
+            System.out.println("Internal Server Error..");
+            return null;
+        }
+        
     }
 
-    @DeleteMapping("/deleteByEmail/{email}")
+    @DeleteMapping("/delete_by_email/{email}")
     public String deleteGuestByEmail(@PathVariable String email)
     {
-        guestService.deleteGuestByEmail(email);
-        System.out.println("Delete operation....");
+        try{
+            guestService.deleteGuestByEmail(email);
         return "Guest deleted successfully...!";
+        }
+        catch(GuestNotFoundException e){
+            System.out.println("Guests Not found with email "+email);
+            return null;
+        }
+        catch(Exception e){
+            System.out.println("Internal Server Error..");
+            return null;
+        }
+        
     }
 }

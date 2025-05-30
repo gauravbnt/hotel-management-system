@@ -4,12 +4,13 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.hms.hotel_management_system.DTO.BookingDTO;
-import com.example.hms.hotel_management_system.Exception.RoomAlreadyBookedException;
+import com.example.hms.hotel_management_system.exception.BookingNotFoundException;
+import com.example.hms.hotel_management_system.exception.InvalidBookingDateException;
+import com.example.hms.hotel_management_system.exception.RoomAlreadyBookedException;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Guest;
 import com.example.hms.hotel_management_system.entity.Room;
@@ -20,19 +21,19 @@ import com.example.hms.hotel_management_system.repository.GuestRepository;
 import com.example.hms.hotel_management_system.repository.RoomRepository;
 import com.example.hms.hotel_management_system.service.BookingService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
-    @Autowired
-    BookingRepository bookingRepository;
+    
+    final BookingRepository bookingRepository;
 
-    @Autowired
-    RoomRepository roomRepository;
+    final RoomRepository roomRepository;
 
-    @Autowired
-    GuestRepository guestRepository;
+    final GuestRepository guestRepository;
 
-    @Autowired
-    BookingMapper bookingMapper;
+    final BookingMapper bookingMapper;
 
     @Transactional
     public BookingDTO createBooking(BookingDTO bookingDTO) {
@@ -43,13 +44,13 @@ public class BookingServiceImpl implements BookingService {
         Date checkOut = bookingDTO.getCheckOutDate();
 
         if (checkIn == null || checkOut == null || !checkIn.before(checkOut)) {
-            throw new IllegalArgumentException("Invalid check-in/check-out dates.");
+            throw new InvalidBookingDateException("Invalid check-in/check-out dates.");
         }
         if (allRooms == null || allRooms.isEmpty()) {
             throw new RoomAlreadyBookedException("No rooms available.");
         }
         if (guest == null) {
-            throw new IllegalStateException("Guest not found with email: " + bookingDTO.getEmail());
+            throw new BookingNotFoundException("Guest not found with email: " + bookingDTO.getEmail());
         }
 
         Room selectRoom = null;
@@ -94,6 +95,9 @@ public class BookingServiceImpl implements BookingService {
 
     public List<BookingDTO> getAllBookings() {
         List<Booking> bookings = bookingRepository.findAll();
+         if (bookings.isEmpty()) {
+            throw new BookingNotFoundException("No bookings found.");
+        }
         List<BookingDTO> dtoList = new ArrayList<>();
         for (Booking booking : bookings) {
             dtoList.add(bookingMapper.toDTO(booking));
@@ -105,7 +109,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findByRoom_RoomNumberAndGuest_Email(roomNumber, email);
 
         if (booking == null) {
-        throw new IllegalArgumentException("No booking found for room number: " + roomNumber + " and email: " + email);
+        throw new BookingNotFoundException("No booking found for room number: " + roomNumber + " and email: " + email);
         }
         
         Date newCheckIn = bookingDTO.getCheckInDate();
@@ -120,7 +124,7 @@ public class BookingServiceImpl implements BookingService {
             return bookingMapper.toDTO(booking);
         }
         if (newCheckIn == null || newCheckOut == null || !newCheckIn.before(newCheckOut)) {
-            throw new IllegalArgumentException("Invalid check-in/check-out dates.");
+            throw new InvalidBookingDateException("Invalid check-in/check-out dates.");
         }
 
         List<Booking> roomBookings = bookingRepository.findByRoom(booking.getRoom());
