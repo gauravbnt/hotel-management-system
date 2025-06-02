@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.service.impl;
+package com.example.hms.hotel_management_system.service.Impl;
 
 import java.util.List;
 
@@ -11,15 +11,16 @@ import com.example.hms.hotel_management_system.exception.GuestNotFoundException;
 import com.example.hms.hotel_management_system.repository.GuestRepository;
 import com.example.hms.hotel_management_system.service.GuestService;
 
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
 public class GuestServiceImpl implements GuestService {
     
+    private final GuestRepository guestRepository;
+    public GuestServiceImpl(GuestRepository guestRepository){
+        this.guestRepository=guestRepository;
+    }
     
-    final GuestRepository guestRepository;
-
+    @Override
     public Guest createGuest(Guest guest){
         if (guestRepository.findByEmail(guest.getEmail()) != null) {
             throw new GuestAlreadyExistsException("Guest already exists with email: " + guest.getEmail());
@@ -27,6 +28,7 @@ public class GuestServiceImpl implements GuestService {
         return guestRepository.save(guest);
     }
 
+    @Override
     public List<Guest> getAllGuest(){
 
         List<Guest>guests=guestRepository.findAll();
@@ -37,6 +39,7 @@ public class GuestServiceImpl implements GuestService {
 
     }
 
+    @Override
     public Guest getGuestByEmail(String email){
         Guest guest = guestRepository.findByEmail(email);
         if (guest == null) {
@@ -45,6 +48,7 @@ public class GuestServiceImpl implements GuestService {
         return guest;    
     }
 
+    @Override
     public Guest updateGuestByEmail(Guest updateGuest,String email){
         Guest guest= getGuestByEmail(email);
         if (guest == null) {
@@ -60,6 +64,7 @@ public class GuestServiceImpl implements GuestService {
     }
     
     @Transactional
+    @Override
     public void deleteGuestByEmail(String email){
         Guest guest = guestRepository.findByEmail(email);
         if (guest == null) {

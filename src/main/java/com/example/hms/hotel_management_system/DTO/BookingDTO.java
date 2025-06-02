@@ -1,8 +1,7 @@
-package com.example.hms.hotel_management_system.DTO;
+package com.example.hms.hotel_management_system.dto;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.sql.Date;
 import java.util.UUID;
 
 import com.example.hms.hotel_management_system.enums.BookingStatus;
@@ -17,8 +16,8 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 public class BookingDTO {
     private UUID id;
-    private Date checkInDate;
-    private Date checkOutDate;
+    private Timestamp checkInDate;
+    private Timestamp checkOutDate;
     private BookingStatus bookingStatus;
     private BigDecimal totalAmount;
     private String email;

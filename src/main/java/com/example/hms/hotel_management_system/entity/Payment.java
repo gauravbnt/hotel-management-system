@@ -1,16 +1,24 @@
 package com.example.hms.hotel_management_system.entity;
 
 import java.math.BigDecimal;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.UUID;
 
-import com.example.hms.hotel_management_system.enums.PaymentMethod;
+import org.hibernate.annotations.CreationTimestamp;
 
+import com.example.hms.hotel_management_system.enums.PaymentMethod;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,19 +26,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Entity
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private BigDecimal amountPaid;
-    private Timestamp paymentDate;
 
+    @CreationTimestamp
+    private Timestamp paymentDate;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
+    @Column(unique = true)
     private String transactionId;
 
-    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="booking_id")
+    @JsonBackReference 
+    private Booking booking;
 }

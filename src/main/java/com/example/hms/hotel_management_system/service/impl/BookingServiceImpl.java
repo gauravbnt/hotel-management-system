@@ -1,16 +1,16 @@
-package com.example.hms.hotel_management_system.service.impl;
+package com.example.hms.hotel_management_system.service.Impl;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.hms.hotel_management_system.DTO.BookingDTO;
 import com.example.hms.hotel_management_system.exception.BookingNotFoundException;
 import com.example.hms.hotel_management_system.exception.InvalidBookingDateException;
 import com.example.hms.hotel_management_system.exception.RoomAlreadyBookedException;
+import com.example.hms.hotel_management_system.dto.BookingDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Guest;
 import com.example.hms.hotel_management_system.entity.Room;
@@ -21,27 +21,35 @@ import com.example.hms.hotel_management_system.repository.GuestRepository;
 import com.example.hms.hotel_management_system.repository.RoomRepository;
 import com.example.hms.hotel_management_system.service.BookingService;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
     
-    final BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
+    private final RoomRepository roomRepository;
+    private final GuestRepository guestRepository;
+    private final BookingMapper bookingMapper;
 
-    final RoomRepository roomRepository;
+    public BookingServiceImpl(
+        BookingRepository bookingRepository,
+        RoomRepository roomRepository,
+        GuestRepository guestRepository,
+        BookingMapper bookingMapper
+        ){
+        this.bookingRepository=bookingRepository;
+        this.roomRepository=roomRepository;
+        this.guestRepository=guestRepository;
+        this.bookingMapper=bookingMapper;
 
-    final GuestRepository guestRepository;
-
-    final BookingMapper bookingMapper;
+    }
 
     @Transactional
+    @Override
     public BookingDTO createBooking(BookingDTO bookingDTO) {
         List<Room> allRooms = roomRepository.findAll();
         Guest guest = guestRepository.findByEmail(bookingDTO.getEmail());
 
-        Date checkIn = bookingDTO.getCheckInDate();
-        Date checkOut = bookingDTO.getCheckOutDate();
+        Timestamp checkIn = bookingDTO.getCheckInDate();
+        Timestamp checkOut = bookingDTO.getCheckOutDate();
 
         if (checkIn == null || checkOut == null || !checkIn.before(checkOut)) {
             throw new InvalidBookingDateException("Invalid check-in/check-out dates.");
@@ -61,8 +69,8 @@ public class BookingServiceImpl implements BookingService {
 
             boolean isConflict = false;
             for (Booking booking : roomBookings) {
-                Date existingCheckIn = booking.getCheckInDate();
-                Date existingCheckOut = booking.getCheckOutDate();
+                Timestamp existingCheckIn = booking.getCheckInDate();
+                Timestamp existingCheckOut = booking.getCheckOutDate();
 
             if (booking.getBookingStatus() != BookingStatus.CANCELLED) {
                     boolean overlaps = checkIn.before(existingCheckOut) && checkOut.after(existingCheckIn);
@@ -90,9 +98,12 @@ public class BookingServiceImpl implements BookingService {
         roomRepository.save(selectRoom);
 
         Booking savedBooking = bookingRepository.save(booking);
+
+        
         return bookingMapper.toDTO(savedBooking);
     }
 
+    @Override
     public List<BookingDTO> getAllBookings() {
         List<Booking> bookings = bookingRepository.findAll();
          if (bookings.isEmpty()) {
@@ -104,7 +115,7 @@ public class BookingServiceImpl implements BookingService {
         }
         return dtoList;
     }
-
+    @Override
     public BookingDTO updateBookingByRoomNumberAndEmail(String roomNumber, String email, BookingDTO bookingDTO) {
         Booking booking = bookingRepository.findByRoom_RoomNumberAndGuest_Email(roomNumber, email);
 
@@ -112,8 +123,8 @@ public class BookingServiceImpl implements BookingService {
         throw new BookingNotFoundException("No booking found for room number: " + roomNumber + " and email: " + email);
         }
         
-        Date newCheckIn = bookingDTO.getCheckInDate();
-        Date newCheckOut = bookingDTO.getCheckOutDate();
+        Timestamp newCheckIn = bookingDTO.getCheckInDate();
+        Timestamp newCheckOut = bookingDTO.getCheckOutDate();
         BookingStatus newStatus = bookingDTO.getBookingStatus();
 
         if (newStatus == BookingStatus.CANCELLED) {
@@ -143,6 +154,5 @@ public class BookingServiceImpl implements BookingService {
 
         Booking updatedBooking = bookingRepository.save(booking);
         return bookingMapper.toDTO(updatedBooking);
-
     }
 }

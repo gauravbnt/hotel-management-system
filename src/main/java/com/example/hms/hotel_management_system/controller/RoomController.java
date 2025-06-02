@@ -15,17 +15,18 @@ import com.example.hms.hotel_management_system.exception.RoomAlreadyExistsExcept
 import com.example.hms.hotel_management_system.exception.RoomNotFoundException;
 import com.example.hms.hotel_management_system.service.RoomService;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.PutMapping;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/room")
 public class RoomController {
     private final RoomService roomService;
 
-    @PostMapping("/add_room")
+    public RoomController(RoomService roomService){
+        this.roomService=roomService;
+    }
+
+    @PostMapping("/add-room")
     public Room createRoom(@RequestBody Room room){
         try{
             return roomService.createRoom(room);
@@ -42,7 +43,7 @@ public class RoomController {
         
     }
 
-    @GetMapping("/get_by_room_number/{roomNumber}")
+    @GetMapping("/get-by-room-number/{roomNumber}")
     public Room getRoomByRoomNumber(@PathVariable String roomNumber){
         try{
             return roomService.getRoomByRoomNumber(roomNumber);
@@ -58,7 +59,7 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/get_by_available")
+    @GetMapping("/get-by-available")
     public List<Room> getAvailableRooms(@RequestParam Boolean isAvailable){
         try{
             return roomService.getAvailableRooms(isAvailable);
@@ -74,7 +75,7 @@ public class RoomController {
         
     }
 
-    @GetMapping("/get_all")
+    @GetMapping("/get-all")
     public List<Room> getAll(){
         try{
             return roomService.getAllRooms();
@@ -91,7 +92,7 @@ public class RoomController {
     }
         
 
-    @PutMapping("update_room_by_room_number/{roomNumber}")
+    @PutMapping("update-room-by-room-number/{roomNumber}")
     public Room updateRoomByRoomNumber(@RequestBody Room room,@PathVariable String roomNumber){
         try {
         return roomService.updateRoomByRoomNumber(room,roomNumber);            

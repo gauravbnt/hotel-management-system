@@ -14,20 +14,21 @@ import com.example.hms.hotel_management_system.exception.GuestAlreadyExistsExcep
 import com.example.hms.hotel_management_system.exception.GuestNotFoundException;
 import com.example.hms.hotel_management_system.service.GuestService;
 
-import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/guest")
 public class GuestController {
 
     private final GuestService guestService;
+    public GuestController(GuestService guestService){
+        this.guestService=guestService;
+    }
 
-    @PostMapping("/add_guest")
+    @PostMapping("/add-guest")
     public Guest addGuest(@RequestBody Guest guest){
         try {
             return guestService.createGuest(guest);   
@@ -42,7 +43,7 @@ public class GuestController {
         }
     }
     
-    @GetMapping("/get_all")
+    @GetMapping("/get-all")
     public List<Guest> getAllGuest()
     {
         try{
@@ -58,7 +59,7 @@ public class GuestController {
         }
     }
 
-    @GetMapping("/get_by_email/{email}")
+    @GetMapping("/get-by-email/{email}")
     public Guest getGuestById(@PathVariable String email){
         try{
             return guestService.getGuestByEmail(email);
@@ -73,7 +74,7 @@ public class GuestController {
         }    
     }
 
-    @PutMapping("/update_by_email/{email}")
+    @PutMapping("/update-by-email/{email}")
     public Guest updateGuestById(@RequestBody Guest guest,@PathVariable String email){
         try{
             return guestService.updateGuestByEmail(guest, email);
@@ -89,7 +90,7 @@ public class GuestController {
         
     }
 
-    @DeleteMapping("/delete_by_email/{email}")
+    @DeleteMapping("/delete-by-email/{email}")
     public String deleteGuestByEmail(@PathVariable String email)
     {
         try{

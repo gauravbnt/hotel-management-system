@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.service.impl;
+package com.example.hms.hotel_management_system.service.Impl;
 
 import java.util.List;
 
@@ -10,14 +10,16 @@ import com.example.hms.hotel_management_system.exception.RoomNotFoundException;
 import com.example.hms.hotel_management_system.repository.RoomRepository;
 import com.example.hms.hotel_management_system.service.RoomService;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Service
 public class RoomServiceImpl implements RoomService{
     
     private final RoomRepository roomRepository;
 
+    public RoomServiceImpl(RoomRepository roomRepository){
+        this.roomRepository=roomRepository;
+    }
+
+    @Override
     public Room createRoom(Room room){
         if (roomRepository.findRoomByRoomNumber(room.getRoomNumber()) != null) {
             throw new RoomAlreadyExistsException("Room already exists with number: " + room.getRoomNumber());
@@ -25,6 +27,8 @@ public class RoomServiceImpl implements RoomService{
         return roomRepository.save(room);
 
     }
+
+    @Override
     public Room getRoomByRoomNumber(String roomNumber){
         Room room = roomRepository.findRoomByRoomNumber(roomNumber);
         if (room == null) {
@@ -33,12 +37,15 @@ public class RoomServiceImpl implements RoomService{
         return room;
     }
 
+    @Override
     public List<Room> getAvailableRooms(Boolean isAvailable){
         if (isAvailable == null) {
             throw new IllegalArgumentException("Availability flag must not be null.");
         }
         return roomRepository.findByIsAvailable(isAvailable);
     }
+
+    @Override
     public List<Room> getAllRooms(){
         List<Room> rooms = roomRepository.findAll();
         if (rooms.isEmpty()) {
@@ -47,6 +54,7 @@ public class RoomServiceImpl implements RoomService{
         return rooms;
     }
 
+    @Override
     public Room updateRoomByRoomNumber(Room room,String roomNumber){
         if (room == null) {
             throw new RoomNotFoundException("Room not found with number: " + roomNumber);

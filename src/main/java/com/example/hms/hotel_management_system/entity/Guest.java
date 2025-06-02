@@ -46,6 +46,6 @@ public class Guest {
     private Timestamp createdAt;
 
     @OneToMany(mappedBy ="guest",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-   // @JsonManagedReference("guest-booking")
+    @JsonManagedReference("guest-booking")
     List<Booking> booking;
 }

@@ -42,7 +42,7 @@ public class Room {
     private String description;
 
     @OneToMany(mappedBy ="room", cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-   // @JsonManagedReference("room-booking")
+    @JsonManagedReference("room-booking")
     List<Booking> booking;
 
 }
