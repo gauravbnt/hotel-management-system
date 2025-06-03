@@ -34,6 +34,7 @@ public class Payment {
     private BigDecimal amountPaid;
 
     @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private Timestamp paymentDate;
 
     @Enumerated(EnumType.STRING)
@@ -42,7 +43,7 @@ public class Payment {
     @Column(unique = true)
     private String transactionId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name="booking_id")
     @JsonBackReference 
     private Booking booking;

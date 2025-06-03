@@ -16,10 +16,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentDTO {
     private UUID id;
-    private BigDecimal amountPaid;
     private Timestamp paymentDate;
+    private BigDecimal amountPaid;
     private PaymentMethod paymentMethod;
     private String transactionId;
     private String roomNumber;
     private String email;
+
 }

@@ -23,6 +23,8 @@ public class BookingDTO {
     private String email;
     private String roomNumber;
     private Boolean isAvailable;
-    private Timestamp createdAt; 
+    private Timestamp createdAt;    
+    
+    private PaymentDTO paymentDTO;
 
 }

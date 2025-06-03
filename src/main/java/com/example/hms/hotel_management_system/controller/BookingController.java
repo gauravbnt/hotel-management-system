@@ -38,7 +38,7 @@ public class BookingController {
             return null;
         }
         catch (Exception e) {
-            System.out.println("Something went wrong..");
+            System.out.println("Something went wrong.."+e);
             return null;
         }
     }

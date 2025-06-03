@@ -57,7 +57,7 @@ public class Booking {
     @JsonBackReference("room-booking")
     private Room room;
 
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference 
     private Payment payment;
 

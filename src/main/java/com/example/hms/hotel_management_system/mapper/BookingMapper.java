@@ -6,7 +6,7 @@ import org.mapstruct.Mapping;
 import com.example.hms.hotel_management_system.dto.BookingDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PaymentMapper.class})
 public interface BookingMapper {
 
 
@@ -14,10 +14,12 @@ public interface BookingMapper {
     @Mapping(source = "room.roomNumber", target = "roomNumber")
     @Mapping(source = "booking.createdAt", target = "createdAt")
     @Mapping(source = "room.isAvailable", target = "isAvailable")
+    @Mapping(source = "payment", target = "paymentDTO") 
     BookingDTO toDTO(Booking booking);
     
 
     @Mapping(target = "guest", ignore = true) 
     @Mapping(target = "room", ignore = true)  
+    @Mapping(target = "payment", ignore = true)
     Booking toEntity(BookingDTO bookingDTO);
 }
