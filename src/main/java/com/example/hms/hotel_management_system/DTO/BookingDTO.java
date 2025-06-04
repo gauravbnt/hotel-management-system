@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 import com.example.hms.hotel_management_system.enums.BookingStatus;
+import com.example.hms.hotel_management_system.enums.RoomType;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,8 @@ public class BookingDTO {
     private String email;
     private String roomNumber;
     private Boolean isAvailable;
-    private Timestamp createdAt;    
+    private Timestamp createdAt; 
+    private RoomType roomType;   
     
     private PaymentDTO paymentDTO;
 

@@ -28,7 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
         return "TXN" + random;
     }
 
-    @Override
+    @Override/*............creating a payment................... */
     public Payment createPayment(PaymentDTO paymentDTO) {
         Booking booking = bookingRepository.findByRoom_RoomNumberAndGuest_Email(paymentDTO.getRoomNumber(),
                 paymentDTO.getEmail());
@@ -48,7 +48,7 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setBooking(booking);
 
         booking.setPayment(payment);
-        return paymentRepository.save(payment);
+        return paymentRepository.saveAndFlush(payment);
     }
 
     @Override

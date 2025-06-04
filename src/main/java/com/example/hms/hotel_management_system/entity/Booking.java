@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import com.example.hms.hotel_management_system.enums.BookingStatus;
+import com.example.hms.hotel_management_system.enums.RoomType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -45,7 +46,7 @@ public class Booking {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
-
+    private RoomType roomType;
 
     @ManyToOne
     @JoinColumn(name="guest_id")
