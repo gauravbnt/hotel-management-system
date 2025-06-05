@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.hms.hotel_management_system.entity.Room;
 import com.example.hms.hotel_management_system.exception.RoomAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.RoomNotFoundException;
+import com.example.hms.hotel_management_system.response.ApiResponse;
 import com.example.hms.hotel_management_system.service.RoomService;
 
 @RestController
@@ -23,73 +26,155 @@ public class RoomController {
         this.roomService = roomService;
     }
 
+    // add room
     @PostMapping("/add-room")
-    public Room createRoom(@RequestBody Room room) {
+    public ResponseEntity<ApiResponse<Room>> createRoom(@RequestBody Room room) {
         try {
             logger.info("Creating room with number: {}", room.getRoomNumber());
-            return roomService.createRoom(room);
+            Room createdRoom = roomService.createRoom(room);
+
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Room created successfully",
+                    HttpStatus.CREATED.value(),
+                    createdRoom);
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (RoomAlreadyExistsException e) {
             logger.warn("Room already exists: {}", room.getRoomNumber());
-            return null;
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Room already exists",
+                    HttpStatus.CONFLICT.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         } catch (Exception e) {
             logger.error("Internal server error while creating room", e);
-            return null;
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Internal server error",
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    // get room by room number
     @GetMapping("/get-by-room-number/{roomNumber}")
-    public Room getRoomByRoomNumber(@PathVariable String roomNumber) {
+    public ResponseEntity<ApiResponse<Room>> getRoomByRoomNumber(@PathVariable String roomNumber) {
         try {
             logger.info("Fetching room with number: {}", roomNumber);
-            return roomService.getRoomByRoomNumber(roomNumber);
+            Room room = roomService.getRoomByRoomNumber(roomNumber);
+
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Room fetched successfully",
+                    HttpStatus.OK.value(),
+                    room);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RoomNotFoundException e) {
             logger.warn("Room not found: {}", roomNumber);
-            return null;
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Room not found",
+                    HttpStatus.NOT_FOUND.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Internal server error while fetching room", e);
-            return null;
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Internal server error",
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    // get room by availability
     @GetMapping("/get-by-available")
-    public List<Room> getAvailableRooms(@RequestParam Boolean isAvailable) {
+    public ResponseEntity<ApiResponse<List<Room>>> getAvailableRooms(@RequestParam Boolean isAvailable) {
         try {
             logger.info("Fetching rooms with availability: {}", isAvailable);
-            return roomService.getAvailableRooms(isAvailable);
+            List<Room> rooms = roomService.getAvailableRooms(isAvailable);
+
+            ApiResponse<List<Room>> response = new ApiResponse<>(
+                    "Rooms fetched successfully",
+                    HttpStatus.OK.value(),
+                    rooms);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RoomNotFoundException e) {
             logger.warn("No rooms found for availability: {}", isAvailable);
-            return null;
+            ApiResponse<List<Room>> response = new ApiResponse<>(
+                    "No rooms found for given availability",
+                    HttpStatus.NOT_FOUND.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Internal server error while fetching available rooms", e);
-            return null;
+            ApiResponse<List<Room>> response = new ApiResponse<>(
+                    "Internal server error",
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    // get all rooms
     @GetMapping("/get-all")
-    public List<Room> getAll() {
+    public ResponseEntity<ApiResponse<List<Room>>> getAll() {
         try {
             logger.info("Fetching all rooms");
-            return roomService.getAllRooms();
+            List<Room> rooms = roomService.getAllRooms();
+
+            ApiResponse<List<Room>> response = new ApiResponse<>(
+                    "All rooms fetched successfully",
+                    HttpStatus.OK.value(),
+                    rooms);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RoomNotFoundException e) {
             logger.warn("No rooms found");
-            return null;
+            ApiResponse<List<Room>> response = new ApiResponse<>(
+                    "No rooms found",
+                    HttpStatus.NOT_FOUND.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Internal server error while fetching all rooms", e);
-            return null;
+            ApiResponse<List<Room>> response = new ApiResponse<>(
+                    "Internal server error",
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("update-room-by-room-number/{roomNumber}")
-    public Room updateRoomByRoomNumber(@RequestBody Room room, @PathVariable String roomNumber) {
+    // update room by room number
+    @PutMapping("/update-room-by-room-number/{roomNumber}")
+    public ResponseEntity<ApiResponse<Room>> updateRoomByRoomNumber(@RequestBody Room room,
+            @PathVariable String roomNumber) {
         try {
             logger.info("Updating room with number: {}", roomNumber);
-            return roomService.updateRoomByRoomNumber(room, roomNumber);
+            Room updatedRoom = roomService.updateRoomByRoomNumber(room, roomNumber);
+
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Room updated successfully",
+                    HttpStatus.OK.value(),
+                    updatedRoom);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RoomNotFoundException e) {
             logger.warn("Room not found for update: {}", roomNumber);
-            return null;
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Room not found",
+                    HttpStatus.NOT_FOUND.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Internal server error while updating room", e);
-            return null;
+            ApiResponse<Room> response = new ApiResponse<>(
+                    "Internal server error",
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

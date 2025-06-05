@@ -118,13 +118,13 @@ public class BookingServiceImpl implements BookingService {
         booking.setRoom(selectRoom);
         booking.setGuest(guest);
 
-        selectRoom.setIsAvailable(false);
+        //selectRoom.setIsAvailable(false);
         roomRepository.save(selectRoom);
 
         Booking savedBooking = bookingRepository.save(booking);
-        PaymentDTO paymentDTO = bookingDTO.getPaymentDTO();
+        PaymentDTO payment = bookingDTO.getPayment();
 
-        if (paymentDTO == null) {
+        if (payment == null) {
             logger.error("Payment information is missing.");
             throw new PaymentInformationIsNullException("Payment information is required for booking.");
         }
@@ -150,16 +150,16 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("Amount paid is missing.");
         }
 
-        paymentDTO.setRoomNumber(savedBooking.getRoom().getRoomNumber());
-        paymentDTO.setEmail(savedBooking.getGuest().getEmail());
+        payment.setRoomNumber(savedBooking.getRoom().getRoomNumber());
+        payment.setEmail(savedBooking.getGuest().getEmail());
         booking.setTotalAmount(totalAmount);
 
-        paymentDTO.setAmountPaid(totalAmount);
+        payment.setAmountPaid(totalAmount);
         String txnId = generateTransactionId();
-        paymentDTO.setTransactionId(txnId);
+        payment.setTransactionId(txnId);
         logger.info("Processing payment with transaction ID: {}", txnId);
 
-        paymentService.createPayment(paymentDTO);
+        paymentService.createPayment(payment);
 
         logger.info("Booking successfully created for room {} and guest {}", selectRoom.getRoomNumber(),
                 guest.getEmail());

@@ -27,6 +27,6 @@ public class BookingDTO {
     private Timestamp createdAt; 
     private RoomType roomType;   
     
-    private PaymentDTO paymentDTO;
+    private PaymentDTO payment;
 
 }

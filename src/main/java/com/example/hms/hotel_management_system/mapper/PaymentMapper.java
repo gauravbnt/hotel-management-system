@@ -14,5 +14,5 @@ public interface PaymentMapper {
     PaymentDTO toDTO(Payment payment);
 
     @Mapping(target = "booking", ignore = true)
-    Payment toEntity(PaymentDTO paymentDTO);
+    Payment toEntity(PaymentDTO payment);
 }

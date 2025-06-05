@@ -14,7 +14,7 @@ public interface BookingMapper {
     @Mapping(source = "room.roomNumber", target = "roomNumber")
     @Mapping(source = "booking.createdAt", target = "createdAt")
     @Mapping(source = "room.isAvailable", target = "isAvailable")
-    @Mapping(source = "payment", target = "paymentDTO") 
+    @Mapping(source = "payment", target = "payment") 
     BookingDTO toDTO(Booking booking);
     
 
