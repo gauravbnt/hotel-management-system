@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.example.hms.hotel_management_system.dto.PaymentDTO;
+import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.PaymentResponseDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Payment;
 import com.example.hms.hotel_management_system.exception.BookingNotFoundException;
 import com.example.hms.hotel_management_system.exception.PaymentAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.PaymentNotFoundException;
+import com.example.hms.hotel_management_system.mapper.PaymentMapper;
 import com.example.hms.hotel_management_system.repository.BookingRepository;
 import com.example.hms.hotel_management_system.repository.PaymentRepository;
 import com.example.hms.hotel_management_system.service.PaymentService;
@@ -21,11 +23,15 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final BookingRepository bookingRepository;
+    private final PaymentMapper paymentMapper;
+
 
     public PaymentServiceImpl(PaymentRepository paymentRepository,
-                              BookingRepository bookingRepository) {
+                              BookingRepository bookingRepository,
+                              PaymentMapper paymentMapper) {
         this.paymentRepository = paymentRepository;
         this.bookingRepository = bookingRepository;
+        this.paymentMapper=paymentMapper;
     }
 
     private String generateTransactionId() {
@@ -34,39 +40,39 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment createPayment(PaymentDTO paymentDTO) {
-        logger.info("Creating payment for room: {} and email: {}", paymentDTO.getRoomNumber(), paymentDTO.getEmail());
+    public PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO) {
+        logger.info("Creating payment for room: {} and email: {}", paymentRequestDTO.getRoomNumber(), paymentRequestDTO.getEmail());
 
         Booking booking = bookingRepository.findByRoom_RoomNumberAndGuest_Email(
-                paymentDTO.getRoomNumber(), paymentDTO.getEmail());
+                paymentRequestDTO.getRoomNumber(), paymentRequestDTO.f);
 
         if (booking == null) {
-            logger.error("Booking not found for room: {} and email: {}", paymentDTO.getRoomNumber(), paymentDTO.getEmail());
+            logger.error("Booking not found for room: {} and email: {}", paymentRequestDTO.getRoomNumber(), paymentRequestDTO.getEmail());
             throw new BookingNotFoundException(
-                    "Booking not found for room " + paymentDTO.getRoomNumber() + " and email " + paymentDTO.getEmail());
+                    "Booking not found for room " + paymentRequestDTO.getRoomNumber() + " and email " + paymentRequestDTO.getEmail());
         }
 
         if (booking.getPayment() != null) {
-            logger.warn("Payment already exists for booking: room {}, email {}", paymentDTO.getRoomNumber(), paymentDTO.getEmail());
+            logger.warn("Payment already exists for booking: room {}, email {}", paymentRequestDTO.getRoomNumber(), paymentRequestDTO.getEmail());
             throw new PaymentAlreadyExistsException("Payment has already been made for this booking.");
         }
 
         Payment payment = new Payment();
-        payment.setAmountPaid(paymentDTO.getAmountPaid());
-        payment.setPaymentMethod(paymentDTO.getPaymentMethod());
+        payment.setAmountPaid(paymentRequestDTO.getAmountPaid());
+        payment.setPaymentMethod(paymentRequestDTO.getPaymentMethod());
         String transactionId = generateTransactionId();
         payment.setTransactionId(transactionId);
         payment.setBooking(booking);
 
         booking.setPayment(payment);
         Payment savedPayment = paymentRepository.saveAndFlush(payment);
-
+\
         logger.info("Payment created successfully with transaction ID: {}", transactionId);
-        return savedPayment;
+        return paymentMapper.toResponseDTO(savedPayment);
     }
 
     @Override
-    public Payment getPaymentByTransactionId(String transactionId) {
+    public PaymentResponseDTO getPaymentByTransactionId(String transactionId) {
         logger.info("Retrieving payment with transaction ID: {}", transactionId);
         Payment payment = paymentRepository.findByTransactionId(transactionId);
         if (payment == null) {
@@ -74,11 +80,11 @@ public class PaymentServiceImpl implements PaymentService {
             throw new PaymentNotFoundException("Payment not found with the id" + transactionId);
         }
         logger.info("Payment retrieved successfully for transaction ID: {}", transactionId);
-        return payment;
+        return paymentMapper.toResponseDTO(payment);
     }
 
     @Override
-    public Payment updatePaymentByTransactionId(Payment payment, String transactionId) {
+    public PaymentResponseDTO updatePaymentByTransactionId(PaymentRequestDTO paymentRequestDTO, String transactionId) {
         logger.info("Updating payment for transaction ID: {}", transactionId);
         Payment update = getPaymentByTransactionId(transactionId);
         if (update == null) {
@@ -86,10 +92,10 @@ public class PaymentServiceImpl implements PaymentService {
             throw new PaymentNotFoundException("Payment not found with the id" + transactionId);
         }
 
-        update.setAmountPaid(payment.getAmountPaid());
-        update.setPaymentMethod(payment.getPaymentMethod());
+        update.setAmountPaid(paymentRequestDTO.getAmountPaid());
+        update.setPaymentMethod(paymentRequestDTO.getPaymentMethod());
         Payment updatedPayment = paymentRepository.save(update);
         logger.info("Payment updated successfully for transaction ID: {}", transactionId);
-        return updatedPayment;
+        return paymentMapper.toResponseDTO(updatedPayment);
     }
 }

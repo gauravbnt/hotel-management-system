@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.hms.hotel_management_system.dto.PaymentDTO;
+import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
 import com.example.hms.hotel_management_system.entity.Payment;
 import com.example.hms.hotel_management_system.exception.BookingNotFoundException;
 import com.example.hms.hotel_management_system.exception.PaymentAlreadyExistsException;
@@ -27,8 +27,8 @@ public class PaymentController {
     }
 
     // add payment
-    @PostMapping("/add-payment")
-    public ResponseEntity<ApiResponse<Payment>> createPayment(@RequestBody PaymentDTO payment) {
+   // @PostMapping("/add-payment")
+    public ResponseEntity<ApiResponse<Payment>> createPayment(@RequestBody PaymentRequestDTO payment) {
         try {
             logger.info("Creating payment for room: {} and email: {}", payment.getRoomNumber(), payment.getEmail());
             Payment savedPayment = paymentService.createPayment(payment);
@@ -73,7 +73,7 @@ public class PaymentController {
     }
 
     // get payment by transaction id
-    @GetMapping("/get-payment-by-trans-id/{transactionId}")
+   // @GetMapping("/get-payment-by-trans-id/{transactionId}")
     public ResponseEntity<ApiResponse<Payment>> getPaymentByTransactionId(@PathVariable String transactionId) {
         try {
             logger.info("Fetching payment with transaction ID: {}", transactionId);
@@ -109,7 +109,7 @@ public class PaymentController {
     }
 
     // update payment
-    @PutMapping("/update-payment/{transactionId}")
+   // @PutMapping("/update-payment/{transactionId}")
     public ResponseEntity<ApiResponse<Payment>> updatePaymentByTransactionId(@RequestBody Payment payment,
             @PathVariable String transactionId) {
         try {

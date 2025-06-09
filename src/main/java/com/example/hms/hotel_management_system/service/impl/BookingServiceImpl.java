@@ -14,8 +14,9 @@ import com.example.hms.hotel_management_system.exception.BookingNotFoundExceptio
 import com.example.hms.hotel_management_system.exception.InvalidBookingDateException;
 import com.example.hms.hotel_management_system.exception.PaymentInformationIsNullException;
 import com.example.hms.hotel_management_system.exception.RoomAlreadyBookedException;
-import com.example.hms.hotel_management_system.dto.BookingDTO;
-import com.example.hms.hotel_management_system.dto.PaymentDTO;
+import com.example.hms.hotel_management_system.dto.BookingRequestDTO;
+import com.example.hms.hotel_management_system.dto.BookingResponseDTO;
+import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Guest;
 import com.example.hms.hotel_management_system.entity.Room;
@@ -58,7 +59,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Transactional
     @Override
-    public BookingDTO createBooking(BookingDTO bookingDTO) {
+    public BookingResponseDTO createBooking(BookingRequestDTO bookingDTO) {
         logger.info("Trying to create booking for email: {}", bookingDTO.getEmail());
 
         List<Room> allRooms = roomRepository.findByRoomTypeAndIsAvailableTrue(bookingDTO.getRoomType());
@@ -122,7 +123,7 @@ public class BookingServiceImpl implements BookingService {
         roomRepository.save(selectRoom);
 
         Booking savedBooking = bookingRepository.save(booking);
-        PaymentDTO payment = bookingDTO.getPayment();
+        PaymentRequestDTO payment = bookingDTO.getPayment();
 
         if (payment == null) {
             logger.error("Payment information is missing.");
@@ -164,11 +165,11 @@ public class BookingServiceImpl implements BookingService {
         logger.info("Booking successfully created for room {} and guest {}", selectRoom.getRoomNumber(),
                 guest.getEmail());
 
-        return bookingMapper.toDTO(savedBooking);
+        return bookingMapper.toResponseDTO(savedBooking);
     }
 
     @Override
-    public List<BookingDTO> getAllBookings() {
+    public List<BookingResponseDTO> getAllBookings() {
         logger.info("Fetching all bookings...");
         List<Booking> bookings = bookingRepository.findAll();
         if (bookings.isEmpty()) {
@@ -177,27 +178,27 @@ public class BookingServiceImpl implements BookingService {
         }
 
         logger.debug("Number of bookings fetched: {}", bookings.size());
-        List<BookingDTO> dtoList = new ArrayList<>();
+        List<BookingResponseDTO> dtoList = new ArrayList<>();
         for (Booking booking : bookings) {
-            dtoList.add(bookingMapper.toDTO(booking));
+            dtoList.add(bookingMapper.toResponseDTO(booking));
         }
         return dtoList;
     }
 
     @Override
-    public BookingDTO updateBookingByRoomNumberAndEmail(String roomNumber, String email, BookingDTO bookingDTO) {
+    public BookingResponseDTO updateBookingByRoomNumberAndEmail(String roomNumber, String email, BookingRequestDTO bookingRequestDTO) {
         logger.info("Updating booking for room: {}, email: {}", roomNumber, email);
         Booking booking = bookingRepository.findByRoom_RoomNumberAndGuest_Email(roomNumber, email);
 
         if (booking == null) {
             logger.error("No booking found for room: {}, email: {}", roomNumber, email);
             throw new BookingNotFoundException(
-                    "No booking found for room number: " + roomNumber + " and email: " + email);
+                "No booking found for room number: " + roomNumber + " and email: " + email);
         }
 
-        Timestamp newCheckIn = bookingDTO.getCheckInDate();
-        Timestamp newCheckOut = bookingDTO.getCheckOutDate();
-        BookingStatus newStatus = bookingDTO.getBookingStatus();
+        Timestamp newCheckIn = bookingRequestDTO.getCheckInDate();
+        Timestamp newCheckOut = bookingRequestDTO.getCheckOutDate();
+        BookingStatus newStatus = bookingRequestDTO.getBookingStatus();
 
         if (newStatus == BookingStatus.CANCELLED) {
             logger.info("Cancelling booking for room: {}", roomNumber);
@@ -205,7 +206,7 @@ public class BookingServiceImpl implements BookingService {
             booking.getRoom().setIsAvailable(true);
             roomRepository.save(booking.getRoom());
             bookingRepository.save(booking);
-            return bookingMapper.toDTO(booking);
+            return bookingMapper.toResponseDTO(booking);
         }
 
         if (newCheckIn == null || newCheckOut == null || !newCheckIn.before(newCheckOut)) {
@@ -227,11 +228,11 @@ public class BookingServiceImpl implements BookingService {
         booking.setCheckInDate(newCheckIn);
         booking.setCheckOutDate(newCheckOut);
         booking.setBookingStatus(newStatus);
-        booking.setTotalAmount(bookingDTO.getTotalAmount());
+        booking.setTotalAmount(bookingRequestDTO.getTotalAmount());
 
         Booking updatedBooking = bookingRepository.save(booking);
         logger.info("Booking updated successfully for room: {}", roomNumber);
-        return bookingMapper.toDTO(updatedBooking);
+        return bookingMapper.toResponseDTO(updatedBooking);
 
     }
 }

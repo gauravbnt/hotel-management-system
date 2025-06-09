@@ -7,15 +7,14 @@ import java.util.UUID;
 import com.example.hms.hotel_management_system.enums.BookingStatus;
 import com.example.hms.hotel_management_system.enums.RoomType;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class BookingDTO {
+@AllArgsConstructor
+public class BookingResponseDTO {
     private UUID id;
     private Timestamp checkInDate;
     private Timestamp checkOutDate;
@@ -27,6 +26,6 @@ public class BookingDTO {
     private Timestamp createdAt; 
     private RoomType roomType;   
     
-    private PaymentDTO payment;
+    private PaymentResponseDTO payment;
 
 }

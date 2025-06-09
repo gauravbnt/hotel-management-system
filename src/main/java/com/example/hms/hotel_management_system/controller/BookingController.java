@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.hms.hotel_management_system.dto.BookingDTO;
+import com.example.hms.hotel_management_system.dto.BookingRequestDTO;
+import com.example.hms.hotel_management_system.dto.BookingResponseDTO;
 import com.example.hms.hotel_management_system.exception.BookingNotFoundException;
 import com.example.hms.hotel_management_system.exception.RoomAlreadyBookedException;
 import com.example.hms.hotel_management_system.response.ApiResponse;
@@ -28,12 +29,12 @@ public class BookingController {
 
     // add booking
     @PostMapping("/add-booking")
-    public ResponseEntity<ApiResponse<BookingDTO>> addBooking(@RequestBody BookingDTO bookingDTO) {
+    public ResponseEntity<ApiResponse<BookingResponseDTO>> addBooking(@RequestBody BookingRequestDTO bookingRequestDTO) {
         try {
-            logger.info("Attempting to add booking: {}", bookingDTO);
-            BookingDTO booking = bookingService.createBooking(bookingDTO);
+            logger.info("Attempting to add booking: {}", bookingRequestDTO);
+            BookingResponseDTO booking = bookingService.createBooking(bookingRequestDTO);
 
-            ApiResponse<BookingDTO> response = new ApiResponse<>(
+            ApiResponse<BookingResponseDTO> response = new ApiResponse<>(
                     "Booking created successfully",
                     HttpStatus.CREATED.value(),
                     booking);
@@ -42,7 +43,7 @@ public class BookingController {
         } catch (RoomAlreadyBookedException e) {
             logger.warn("Room already booked: {}", e.getMessage());
 
-            ApiResponse<BookingDTO> response = new ApiResponse<>(
+            ApiResponse<BookingResponseDTO> response = new ApiResponse<>(
                     "Room already booked",
                     HttpStatus.CONFLICT.value(),
                     null);
@@ -51,7 +52,7 @@ public class BookingController {
         } catch (Exception e) {
             logger.error("Error occurred while adding booking", e);
 
-            ApiResponse<BookingDTO> response = new ApiResponse<>(
+            ApiResponse<BookingResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
@@ -62,21 +63,21 @@ public class BookingController {
 
     // get all bookings..
     @GetMapping("/get-all")
-    public ResponseEntity<ApiResponse<List<BookingDTO>>> getAllBookings() {
+    public ResponseEntity<ApiResponse<List<BookingResponseDTO>>> getAllBookings() {
         try {
             logger.info("Fetching all bookings...");
-            List<BookingDTO> bookingDTOs = bookingService.getAllBookings();
+            List<BookingResponseDTO> bookingDTO = bookingService.getAllBookings();
 
-            ApiResponse<List<BookingDTO>> response = new ApiResponse<>(
+            ApiResponse<List<BookingResponseDTO>> response = new ApiResponse<>(
                     "All bookings fetched successfully",
                     HttpStatus.OK.value(),
-                    bookingDTOs);
+                    bookingDTO);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (BookingNotFoundException e) {
             logger.warn("No bookings found: {}", e.getMessage());
 
-            ApiResponse<List<BookingDTO>> response = new ApiResponse<>(
+            ApiResponse<List<BookingResponseDTO>> response = new ApiResponse<>(
                     "No bookings found",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -85,7 +86,7 @@ public class BookingController {
         } catch (Exception e) {
             logger.error("Error occurred while fetching all bookings", e);
 
-            ApiResponse<List<BookingDTO>> response = new ApiResponse<>(
+            ApiResponse<List<BookingResponseDTO>> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
@@ -96,15 +97,15 @@ public class BookingController {
 
     // update the booking
     @PutMapping("/update-booking")
-    public ResponseEntity<ApiResponse<BookingDTO>> updateBooking(
+    public ResponseEntity<ApiResponse<BookingResponseDTO>> updateBooking(
             @RequestParam String roomNumber,
             @RequestParam String email,
-            @RequestBody BookingDTO bookingDTO) {
+            @RequestBody BookingRequestDTO bookingDTO) {
         try {
             logger.info("Updating booking for room: {}, email: {}", roomNumber, email);
-            BookingDTO updatedBooking = bookingService.updateBookingByRoomNumberAndEmail(roomNumber, email, bookingDTO);
+            BookingResponseDTO updatedBooking = bookingService.updateBookingByRoomNumberAndEmail(roomNumber, email, bookingDTO);
 
-            ApiResponse<BookingDTO> response = new ApiResponse<>(
+            ApiResponse<BookingResponseDTO> response = new ApiResponse<>(
                     "Booking updated successfully",
                     HttpStatus.OK.value(),
                     updatedBooking);
@@ -113,7 +114,7 @@ public class BookingController {
         } catch (BookingNotFoundException e) {
             logger.warn("Booking not found for room: {} and email: {}", roomNumber, email);
 
-            ApiResponse<BookingDTO> response = new ApiResponse<>(
+            ApiResponse<BookingResponseDTO> response = new ApiResponse<>(
                     "Booking not found",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -122,7 +123,7 @@ public class BookingController {
         } catch (Exception e) {
             logger.error("Error occurred while updating booking", e);
 
-            ApiResponse<BookingDTO> response = new ApiResponse<>(
+            ApiResponse<BookingResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);

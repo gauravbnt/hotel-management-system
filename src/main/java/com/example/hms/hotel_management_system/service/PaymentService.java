@@ -1,10 +1,10 @@
 package com.example.hms.hotel_management_system.service;
 
-import com.example.hms.hotel_management_system.dto.PaymentDTO;
-import com.example.hms.hotel_management_system.entity.Payment;
+import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.PaymentResponseDTO;
 
 public interface PaymentService {
-    public Payment createPayment(PaymentDTO paymentDTO);
-    public Payment getPaymentByTransactionId(String transactionId);
-    public Payment updatePaymentByTransactionId(Payment payment,String transactionId);
+    public PaymentResponseDTO createPayment(PaymentRequestDTO paymentDTO);
+    public PaymentResponseDTO getPaymentByTransactionId(String transactionId);
+    public PaymentResponseDTO updatePaymentByTransactionId(PaymentRequestDTO payment,String transactionId);
 }
