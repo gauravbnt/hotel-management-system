@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.service.Impl;
+package com.example.hms.hotel_management_system.service.impl;
 
 import java.util.List;
 

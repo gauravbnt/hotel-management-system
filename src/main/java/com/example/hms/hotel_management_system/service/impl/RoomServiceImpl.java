@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.service.Impl;
+package com.example.hms.hotel_management_system.service.impl;
 
 import java.util.List;
 
@@ -30,12 +30,15 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomResponseDTO createRoom(RoomRequestDTO roomRequestDTO) {
-        logger.info("Creating room with room number: {}", roomRequestDTO.getRoomNumber());
-        if (roomRepository.findRoomByRoomNumber(roomRequestDTO.getRoomNumber()) != null) {
-            logger.warn("Room already exists with number: {}", roomRequestDTO.getRoomNumber());
-            throw new RoomAlreadyExistsException("Room already exists with number: " + roomRequestDTO.getRoomNumber());
-        }
+    
         Room room=roomMapper.toEntity(roomRequestDTO);
+
+        logger.info("Creating room with room number: {}", room.getRoomNumber());
+        if (roomRepository.findRoomByRoomNumber(room.getRoomNumber()) != null) {
+            logger.warn("Room already exists with number: {}", room.getRoomNumber());
+            throw new RoomAlreadyExistsException("Room already exists with number: " + room.getRoomNumber());
+        }
+        
         Room savedRoom = roomRepository.save(room);
         logger.info("Room created successfully: {}", savedRoom.getRoomNumber());
         return roomMapper.toResponseDTO(savedRoom);
@@ -76,19 +79,20 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomResponseDTO updateRoomByRoomNumber(RoomRequestDTO roomRequestDTO, String roomNumber) {
+        Room r2=roomMapper.toEntity(roomRequestDTO);
         logger.info("Updating room with room number: {}", roomNumber);
-        if (roomRequestDTO == null) {
+        if (r2 == null) {
             logger.error("Room update data is null for room number: {}", roomNumber);
             throw new RoomNotFoundException("Room not found with number: " + roomNumber);
         }
 
         Room r1 = roomRepository.findRoomByRoomNumber(roomNumber); 
-        r1.setRoomNumber(roomRequestDTO.getRoomNumber());
-        r1.setRoomType(roomRequestDTO.getRoomType());
-        r1.setFloorNumber(roomRequestDTO.getFloorNumber());
-        r1.setDescription(roomRequestDTO.getDescription());
-        r1.setIsAvailable(roomRequestDTO.getIsAvailable());
-        r1.setPricePerNight(roomRequestDTO.getPricePerNight());
+        r1.setRoomNumber(r2.getRoomNumber());
+        r1.setRoomType(r2.getRoomType());
+        r1.setFloorNumber(r2.getFloorNumber());
+        r1.setDescription(r2.getDescription());
+        r1.setIsAvailable(r2.getIsAvailable());
+        r1.setPricePerNight(r2.getPricePerNight());
 
         Room room=roomRepository.save(r1);
         

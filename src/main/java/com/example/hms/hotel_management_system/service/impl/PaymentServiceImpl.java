@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.service.Impl;
+package com.example.hms.hotel_management_system.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,10 +55,10 @@ public class PaymentServiceImpl implements PaymentService {
             logger.warn("Payment already exists for booking: room {}, email {}", paymentRequestDTO.getRoomNumber(), paymentRequestDTO.getEmail());
             throw new PaymentAlreadyExistsException("Payment has already been made for this booking.");
         }
-
+        Payment p1=paymentMapper.toEntity(paymentRequestDTO);
         Payment payment = new Payment();
-        payment.setAmountPaid(paymentRequestDTO.getAmountPaid());
-        payment.setPaymentMethod(paymentRequestDTO.getPaymentMethod());
+        payment.setAmountPaid(p1.getAmountPaid());
+        payment.setPaymentMethod(p1.getPaymentMethod());
         String transactionId = generateTransactionId();
         payment.setTransactionId(transactionId);
         payment.setBooking(booking);
@@ -90,9 +90,9 @@ public class PaymentServiceImpl implements PaymentService {
             logger.error("Payment not found for transaction ID: {}", transactionId);
             throw new PaymentNotFoundException("Payment not found with the id" + transactionId);
         }
-
-        update.setAmountPaid(paymentRequestDTO.getAmountPaid());
-        update.setPaymentMethod(paymentRequestDTO.getPaymentMethod());
+        Payment payment=paymentMapper.toEntity(paymentRequestDTO);
+        update.setAmountPaid(payment.getAmountPaid());
+        update.setPaymentMethod(payment.getPaymentMethod());
 
         Payment updatedPayment = paymentRepository.save(update);
         logger.info("Payment updated successfully for transaction ID: {}", transactionId);
