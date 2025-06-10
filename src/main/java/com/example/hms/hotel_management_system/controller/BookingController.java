@@ -15,6 +15,8 @@ import com.example.hms.hotel_management_system.exception.RoomAlreadyBookedExcept
 import com.example.hms.hotel_management_system.response.ApiResponse;
 import com.example.hms.hotel_management_system.service.BookingService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
@@ -29,7 +31,7 @@ public class BookingController {
 
     // add booking
     @PostMapping("/add-booking")
-    public ResponseEntity<ApiResponse<BookingResponseDTO>> addBooking(@RequestBody BookingRequestDTO bookingRequestDTO) {
+    public ResponseEntity<ApiResponse<BookingResponseDTO>> addBooking(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) {
         try {
             logger.info("Attempting to add booking: {}", bookingRequestDTO);
             BookingResponseDTO booking = bookingService.createBooking(bookingRequestDTO);
@@ -100,7 +102,7 @@ public class BookingController {
     public ResponseEntity<ApiResponse<BookingResponseDTO>> updateBooking(
             @RequestParam String roomNumber,
             @RequestParam String email,
-            @RequestBody BookingRequestDTO bookingDTO) {
+           @Valid @RequestBody BookingRequestDTO bookingDTO) {
         try {
             logger.info("Updating booking for room: {}, email: {}", roomNumber, email);
             BookingResponseDTO updatedBooking = bookingService.updateBookingByRoomNumberAndEmail(roomNumber, email, bookingDTO);

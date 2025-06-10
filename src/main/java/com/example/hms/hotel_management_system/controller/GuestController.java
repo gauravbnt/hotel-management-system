@@ -8,11 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.hms.hotel_management_system.entity.Guest;
+import com.example.hms.hotel_management_system.dto.GuestRequestDTO;
+import com.example.hms.hotel_management_system.dto.GuestResponseDTO;
 import com.example.hms.hotel_management_system.exception.GuestAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.GuestNotFoundException;
 import com.example.hms.hotel_management_system.response.ApiResponse;
 import com.example.hms.hotel_management_system.service.GuestService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/guest")
@@ -28,11 +31,11 @@ public class GuestController {
 
     // adding a guest
     @PostMapping("/add-guest")
-    public ResponseEntity<ApiResponse<Guest>> addGuest(@RequestBody Guest guest) {
+    public ResponseEntity<ApiResponse<GuestResponseDTO>> addGuest(@Valid @RequestBody GuestRequestDTO guest) {
         try {
             logger.info("Attempting to add guest: {}", guest.getEmail());
-            Guest guest_ob = guestService.createGuest(guest);
-            ApiResponse<Guest> response = new ApiResponse<>(
+            GuestResponseDTO guest_ob = guestService.createGuest(guest);
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Guest added successfully",
                     HttpStatus.CREATED.value(),
                     guest_ob);
@@ -40,7 +43,7 @@ public class GuestController {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (GuestAlreadyExistsException e) {
             logger.warn("Guest already exists: {}", guest.getEmail());
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Guest already exists",
                     HttpStatus.CONFLICT.value(),
                     null);
@@ -49,7 +52,7 @@ public class GuestController {
 
         } catch (Exception e) {
             logger.error("Error while adding guest", e);
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
@@ -60,12 +63,12 @@ public class GuestController {
 
     // getting all the guests
     @GetMapping("/get-all")
-    public ResponseEntity<ApiResponse<List<Guest>>> getAllGuest() {
+    public ResponseEntity<ApiResponse<List<GuestResponseDTO>>> getAllGuest() {
         try {
             logger.info("Fetching all guests...");
-            List<Guest> guests = guestService.getAllGuest();
+            List<GuestResponseDTO> guests = guestService.getAllGuest();
 
-            ApiResponse<List<Guest>> response = new ApiResponse<>(
+            ApiResponse<List<GuestResponseDTO>> response = new ApiResponse<>(
                     "Guests fetched successfully",
                     HttpStatus.OK.value(),
                     guests);
@@ -75,7 +78,7 @@ public class GuestController {
         } catch (GuestNotFoundException e) {
             logger.warn("No guests found: {}", e.getMessage());
 
-            ApiResponse<List<Guest>> response = new ApiResponse<>(
+            ApiResponse<List<GuestResponseDTO>> response = new ApiResponse<>(
                     "No guests found",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -85,7 +88,7 @@ public class GuestController {
         } catch (Exception e) {
             logger.error("Error while fetching all guests", e);
 
-            ApiResponse<List<Guest>> response = new ApiResponse<>(
+            ApiResponse<List<GuestResponseDTO>> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
@@ -96,12 +99,12 @@ public class GuestController {
 
     // get the guest by email
     @GetMapping("/get-by-email/{email}")
-    public ResponseEntity<ApiResponse<Guest>> getGuestById(@PathVariable String email) {
+    public ResponseEntity<ApiResponse<GuestResponseDTO>> getGuestById(@PathVariable String email) {
         try {
             logger.info("Fetching guest by email: {}", email);
-            Guest guest = guestService.getGuestByEmail(email);
+            GuestResponseDTO guest = guestService.getGuestByEmail(email);
 
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Guest fetched successfully",
                     HttpStatus.OK.value(),
                     guest);
@@ -111,7 +114,7 @@ public class GuestController {
         } catch (GuestNotFoundException e) {
             logger.warn("Guest not found with email: {}", email);
 
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Guest not found",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -121,7 +124,7 @@ public class GuestController {
         } catch (Exception e) {
             logger.error("Error while fetching guest by email", e);
 
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
@@ -131,12 +134,12 @@ public class GuestController {
 
     // update the guest by email
     @PutMapping("/update-by-email/{email}")
-    public ResponseEntity<ApiResponse<Guest>> updateGuestById(@RequestBody Guest guest, @PathVariable String email) {
+    public ResponseEntity<ApiResponse<GuestResponseDTO>> updateGuestById(@Valid @RequestBody GuestRequestDTO guest, @PathVariable String email) {
         try {
             logger.info("Updating guest with email: {}", email);
-            Guest updatedGuest = guestService.updateGuestByEmail(guest, email);
+            GuestResponseDTO updatedGuest = guestService.updateGuestByEmail(guest, email);
 
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Guest updated successfully",
                     HttpStatus.OK.value(),
                     updatedGuest);
@@ -146,7 +149,7 @@ public class GuestController {
         } catch (GuestNotFoundException e) {
             logger.warn("Guest not found for update with email: {}", email);
 
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Guest not found",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -156,7 +159,7 @@ public class GuestController {
         } catch (Exception e) {
             logger.error("Error while updating guest", e);
 
-            ApiResponse<Guest> response = new ApiResponse<>(
+            ApiResponse<GuestResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);

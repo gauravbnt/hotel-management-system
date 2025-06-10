@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentRequestDTO {
 
-  //  @NotNull(message = "Payment date is required")
-   // private Timestamp paymentDate;
-
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Amount must be greater than zero")
     private BigDecimal amountPaid;
@@ -25,13 +22,13 @@ public class PaymentRequestDTO {
     @NotNull(message = "Payment method is required")
     private PaymentMethod paymentMethod;
 
-   // @NotBlank(message = "Transaction ID is required")
-   //private String transactionId;
+    @NotBlank(message = "Transaction ID is required")
+   private String transactionId;
 
     @NotBlank(message = "Room number is required")
     private String roomNumber;
 
-    //@Email(message = "Invalid email format")
-    //@NotBlank(message = "Email is required")
-    //private String email;
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email is required")
+    private String email;
 }

@@ -42,9 +42,8 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO) {
         logger.info("Creating payment for room: {} and email: {}", paymentRequestDTO.getRoomNumber(), paymentRequestDTO.getEmail());
-
         Booking booking = bookingRepository.findByRoom_RoomNumberAndGuest_Email(
-                paymentRequestDTO.getRoomNumber(), paymentRequestDTO.f);
+                paymentRequestDTO.getRoomNumber(), paymentRequestDTO.getEmail());
 
         if (booking == null) {
             logger.error("Booking not found for room: {} and email: {}", paymentRequestDTO.getRoomNumber(), paymentRequestDTO.getEmail());
@@ -66,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         booking.setPayment(payment);
         Payment savedPayment = paymentRepository.saveAndFlush(payment);
-\
+
         logger.info("Payment created successfully with transaction ID: {}", transactionId);
         return paymentMapper.toResponseDTO(savedPayment);
     }
@@ -86,7 +85,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDTO updatePaymentByTransactionId(PaymentRequestDTO paymentRequestDTO, String transactionId) {
         logger.info("Updating payment for transaction ID: {}", transactionId);
-        Payment update = getPaymentByTransactionId(transactionId);
+        Payment update = paymentRepository.findByTransactionId(transactionId);
         if (update == null) {
             logger.error("Payment not found for transaction ID: {}", transactionId);
             throw new PaymentNotFoundException("Payment not found with the id" + transactionId);
@@ -94,6 +93,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         update.setAmountPaid(paymentRequestDTO.getAmountPaid());
         update.setPaymentMethod(paymentRequestDTO.getPaymentMethod());
+
         Payment updatedPayment = paymentRepository.save(update);
         logger.info("Payment updated successfully for transaction ID: {}", transactionId);
         return paymentMapper.toResponseDTO(updatedPayment);

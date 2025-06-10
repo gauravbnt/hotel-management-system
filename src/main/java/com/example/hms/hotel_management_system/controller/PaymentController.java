@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
-import com.example.hms.hotel_management_system.entity.Payment;
+import com.example.hms.hotel_management_system.dto.PaymentResponseDTO;
 import com.example.hms.hotel_management_system.exception.BookingNotFoundException;
 import com.example.hms.hotel_management_system.exception.PaymentAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.PaymentNotFoundException;
 import com.example.hms.hotel_management_system.response.ApiResponse;
 import com.example.hms.hotel_management_system.service.PaymentService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/payment")
@@ -27,13 +29,13 @@ public class PaymentController {
     }
 
     // add payment
-   // @PostMapping("/add-payment")
-    public ResponseEntity<ApiResponse<Payment>> createPayment(@RequestBody PaymentRequestDTO payment) {
+    @PostMapping("/add-payment")
+    public ResponseEntity<ApiResponse<PaymentResponseDTO>> createPayment(@Valid @RequestBody PaymentRequestDTO payment) {
         try {
             logger.info("Creating payment for room: {} and email: {}", payment.getRoomNumber(), payment.getEmail());
-            Payment savedPayment = paymentService.createPayment(payment);
+            PaymentResponseDTO savedPayment = paymentService.createPayment(payment);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Payment created successfully",
                     HttpStatus.CREATED.value(),
                     savedPayment);
@@ -43,7 +45,7 @@ public class PaymentController {
         } catch (BookingNotFoundException e) {
             logger.warn("Booking not found for room {} and email {}", payment.getRoomNumber(), payment.getEmail());
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Booking not found for given room and email",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -53,7 +55,7 @@ public class PaymentController {
         } catch (PaymentAlreadyExistsException e) {
             logger.warn("Payment already exists for room {} and email {}", payment.getRoomNumber(), payment.getEmail());
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Payment already exists for given room and email",
                     HttpStatus.CONFLICT.value(),
                     null);
@@ -63,7 +65,7 @@ public class PaymentController {
         } catch (Exception e) {
             logger.error("Unexpected error while creating payment", e);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
@@ -73,13 +75,13 @@ public class PaymentController {
     }
 
     // get payment by transaction id
-   // @GetMapping("/get-payment-by-trans-id/{transactionId}")
-    public ResponseEntity<ApiResponse<Payment>> getPaymentByTransactionId(@PathVariable String transactionId) {
+    @GetMapping("/get-payment-by-trans-id/{transactionId}")
+    public ResponseEntity<ApiResponse<PaymentResponseDTO>> getPaymentByTransactionId(@PathVariable String transactionId) {
         try {
             logger.info("Fetching payment with transaction ID: {}", transactionId);
-            Payment payment = paymentService.getPaymentByTransactionId(transactionId);
+            PaymentResponseDTO payment = paymentService.getPaymentByTransactionId(transactionId);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Payment fetched successfully",
                     HttpStatus.OK.value(),
                     payment);
@@ -89,7 +91,7 @@ public class PaymentController {
         } catch (PaymentNotFoundException e) {
             logger.warn("Payment not found for transaction ID: {}", transactionId);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Payment not found for given transaction ID",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -99,7 +101,7 @@ public class PaymentController {
         } catch (Exception e) {
             logger.error("Unexpected error while fetching payment", e);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
@@ -109,14 +111,14 @@ public class PaymentController {
     }
 
     // update payment
-   // @PutMapping("/update-payment/{transactionId}")
-    public ResponseEntity<ApiResponse<Payment>> updatePaymentByTransactionId(@RequestBody Payment payment,
+    @PutMapping("/update-payment/{transactionId}")
+    public ResponseEntity<ApiResponse<PaymentResponseDTO>> updatePaymentByTransactionId(@Valid @RequestBody PaymentRequestDTO payment,
             @PathVariable String transactionId) {
         try {
             logger.info("Updating payment with transaction ID: {}", transactionId);
-            Payment updatedPayment = paymentService.updatePaymentByTransactionId(payment, transactionId);
+            PaymentResponseDTO updatedPayment = paymentService.updatePaymentByTransactionId(payment, transactionId);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Payment updated successfully",
                     HttpStatus.OK.value(),
                     updatedPayment);
@@ -126,7 +128,7 @@ public class PaymentController {
         } catch (PaymentNotFoundException e) {
             logger.warn("Payment not found for transaction ID: {}", transactionId);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Payment not found for given transaction ID",
                     HttpStatus.NOT_FOUND.value(),
                     null);
@@ -136,7 +138,7 @@ public class PaymentController {
         } catch (Exception e) {
             logger.error("Unexpected error while updating payment", e);
 
-            ApiResponse<Payment> response = new ApiResponse<>(
+            ApiResponse<PaymentResponseDTO> response = new ApiResponse<>(
                     "Internal server error",
                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     null);
