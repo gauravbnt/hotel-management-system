@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.service.Impl;
+package com.example.hms.hotel_management_system.service.impl;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -65,9 +65,10 @@ public class BookingServiceImpl implements BookingService {
         List<Room> allRooms = roomRepository.findByRoomTypeAndIsAvailableTrue(bookingDTO.getRoomType());
         logger.debug("Available rooms of type {}: {}", bookingDTO.getRoomType(), allRooms.size());
 
+        
         Guest guest = guestRepository.findByEmail(bookingDTO.getEmail());
         logger.debug("Guest lookup for email {}: {}", bookingDTO.getEmail(), guest != null ? "Found" : "Not Found");
-
+        
         Timestamp checkIn = bookingDTO.getCheckInDate();
         Timestamp checkOut = bookingDTO.getCheckOutDate();
 
