@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
-import com.example.hms.hotel_management_system.dto.PaymentResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.PaymentResponseDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Payment;
 import com.example.hms.hotel_management_system.exception.BookingNotFoundException;
@@ -20,15 +20,12 @@ import com.example.hms.hotel_management_system.service.PaymentService;
 public class PaymentServiceImpl implements PaymentService {
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
-
     private final PaymentRepository paymentRepository;
     private final BookingRepository bookingRepository;
     private final PaymentMapper paymentMapper;
 
 
-    public PaymentServiceImpl(PaymentRepository paymentRepository,
-                              BookingRepository bookingRepository,
-                              PaymentMapper paymentMapper) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository,BookingRepository bookingRepository,PaymentMapper paymentMapper) {
         this.paymentRepository = paymentRepository;
         this.bookingRepository = bookingRepository;
         this.paymentMapper=paymentMapper;
@@ -62,14 +59,12 @@ public class PaymentServiceImpl implements PaymentService {
         String transactionId = generateTransactionId();
         payment.setTransactionId(transactionId);
         payment.setBooking(booking);
-
         booking.setPayment(payment);
         Payment savedPayment = paymentRepository.saveAndFlush(payment);
 
         logger.info("Payment created successfully with transaction ID: {}", transactionId);
         return paymentMapper.toResponseDTO(savedPayment);
     }
-
     @Override
     public PaymentResponseDTO getPaymentByTransactionId(String transactionId) {
         logger.info("Retrieving payment with transaction ID: {}", transactionId);
@@ -81,7 +76,6 @@ public class PaymentServiceImpl implements PaymentService {
         logger.info("Payment retrieved successfully for transaction ID: {}", transactionId);
         return paymentMapper.toResponseDTO(payment);
     }
-
     @Override
     public PaymentResponseDTO updatePaymentByTransactionId(PaymentRequestDTO paymentRequestDTO, String transactionId) {
         logger.info("Updating payment for transaction ID: {}", transactionId);

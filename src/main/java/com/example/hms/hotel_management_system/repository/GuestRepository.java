@@ -10,5 +10,6 @@ import com.example.hms.hotel_management_system.entity.Guest;
 @Repository
 public interface GuestRepository extends JpaRepository<Guest,UUID>{
     Guest findByEmail(String email);
+    Boolean existsByEmail(String email);
     void deleteByEmail(String email);
 }

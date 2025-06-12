@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.hms.hotel_management_system.dto.GuestRequestDTO;
-import com.example.hms.hotel_management_system.dto.GuestResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.GuestRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.GuestResponseDTO;
 import com.example.hms.hotel_management_system.entity.Guest;
 import com.example.hms.hotel_management_system.exception.GuestAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.GuestNotFoundException;
@@ -33,7 +33,8 @@ public class GuestServiceImpl implements GuestService {
     @Override
     public GuestResponseDTO createGuest(GuestRequestDTO guest) {
         logger.info("Attempting to create guest with email: {}", guest.getEmail());
-        if (guestRepository.findByEmail(guest.getEmail()) != null) {
+        //check by using boolean method
+        if (guestRepository.existsByEmail(guest.getEmail())) {
             logger.warn("Guest already exists with email: {}", guest.getEmail());
             throw new GuestAlreadyExistsException("Guest already exists with email: " + guest.getEmail());
         }
@@ -52,7 +53,7 @@ public class GuestServiceImpl implements GuestService {
             throw new GuestNotFoundException("No guests found.");
         }
 
-        List<GuestResponseDTO> guestDTO = guestMapper.toResponseDTO(guests);
+        List<GuestResponseDTO> guestDTO = guestMapper.toResponseDTOList(guests);
 
         logger.info("Found {} guests.", guests.size());
         return guestDTO;
@@ -96,11 +97,13 @@ public class GuestServiceImpl implements GuestService {
     @Override
     public void deleteGuestByEmail(String email) {
         logger.info("Attempting to delete guest with email: {}", email);
-        Guest guest = guestRepository.findByEmail(email);
-        if (guest == null) {
+        boolean guestExists=guestRepository.existsByEmail(email);
+        if(!guestExists)
+        {
             logger.error("Cannot delete. Guest not found with email: {}", email);
             throw new GuestNotFoundException("Cannot delete. Guest not found with email: " + email);
         }
+        Guest guest=guestRepository.findByEmail(email);
         guestRepository.delete(guest);
         logger.info("Guest deleted successfully with email: {}", email);
     }

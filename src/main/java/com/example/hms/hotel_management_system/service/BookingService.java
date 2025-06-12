@@ -3,8 +3,8 @@ package com.example.hms.hotel_management_system.service;
 
 import java.util.List;
 
-import com.example.hms.hotel_management_system.dto.BookingRequestDTO;
-import com.example.hms.hotel_management_system.dto.BookingResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.BookingRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.BookingResponseDTO;
 
 public interface BookingService {
     public BookingResponseDTO createBooking(BookingRequestDTO bookingDTO); 

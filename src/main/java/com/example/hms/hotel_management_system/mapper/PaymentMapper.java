@@ -2,8 +2,9 @@ package com.example.hms.hotel_management_system.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
-import com.example.hms.hotel_management_system.dto.PaymentResponseDTO;
+
+import com.example.hms.hotel_management_system.dto.request.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.PaymentResponseDTO;
 import com.example.hms.hotel_management_system.entity.Payment;
 
 @Mapper(componentModel = "spring")

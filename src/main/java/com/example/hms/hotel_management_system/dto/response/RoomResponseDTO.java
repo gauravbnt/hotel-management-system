@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.dto;
+package com.example.hms.hotel_management_system.dto.response;
 
 import java.math.BigDecimal;
 import java.util.UUID;
