@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.dto;
+package com.example.hms.hotel_management_system.dto.response;
 
 import java.sql.Timestamp;
 import java.util.UUID;

@@ -12,6 +12,7 @@ import com.example.hms.hotel_management_system.enums.RoomType;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,UUID>{
     Room findRoomByRoomNumber(String roomNumber);
+    Boolean existsByRoomNumber(String roomNumber);
     List<Room> findByIsAvailable(Boolean isAvailable);
     List<Room> findByRoomTypeAndIsAvailableTrue(RoomType roomType);
 

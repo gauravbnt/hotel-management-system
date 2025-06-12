@@ -2,8 +2,8 @@ package com.example.hms.hotel_management_system.service;
 
 import java.util.List;
 
-import com.example.hms.hotel_management_system.dto.GuestRequestDTO;
-import com.example.hms.hotel_management_system.dto.GuestResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.GuestRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.GuestResponseDTO;
 
 public interface GuestService {
     public GuestResponseDTO createGuest(GuestRequestDTO guest);

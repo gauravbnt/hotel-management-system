@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.example.hms.hotel_management_system.dto.RoomRequestDTO;
-import com.example.hms.hotel_management_system.dto.RoomResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.RoomRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.RoomResponseDTO;
 import com.example.hms.hotel_management_system.entity.Room;
 import com.example.hms.hotel_management_system.exception.RoomAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.RoomNotFoundException;
@@ -34,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
         Room room=roomMapper.toEntity(roomRequestDTO);
 
         logger.info("Creating room with room number: {}", room.getRoomNumber());
-        if (roomRepository.findRoomByRoomNumber(room.getRoomNumber()) != null) {
+        if (roomRepository.existsByRoomNumber(room.getRoomNumber())) {
             logger.warn("Room already exists with number: {}", room.getRoomNumber());
             throw new RoomAlreadyExistsException("Room already exists with number: " + room.getRoomNumber());
         }
@@ -63,7 +63,7 @@ public class RoomServiceImpl implements RoomService {
             throw new IllegalArgumentException("Availability flag must not be null.");
         }
         List<Room> room=roomRepository.findByIsAvailable(isAvailable);
-        return roomMapper.toResponseDTO(room);
+        return roomMapper.toResponseDTOList(room);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class RoomServiceImpl implements RoomService {
             logger.warn("No rooms found.");
             throw new RoomNotFoundException("No rooms found.....");
         }
-        return roomMapper.toResponseDTO(rooms);
+        return roomMapper.toResponseDTOList(rooms);
     }
 
     @Override
