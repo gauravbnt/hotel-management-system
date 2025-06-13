@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.hms.hotel_management_system.dto.GuestRequestDTO;
-import com.example.hms.hotel_management_system.dto.GuestResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.GuestRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.GuestResponseDTO;
 import com.example.hms.hotel_management_system.entity.Guest;
 import com.example.hms.hotel_management_system.exception.GuestAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.GuestNotFoundException;

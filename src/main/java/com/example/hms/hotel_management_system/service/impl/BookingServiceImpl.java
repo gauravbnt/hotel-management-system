@@ -16,9 +16,9 @@ import com.example.hms.hotel_management_system.exception.BookingNotFoundExceptio
 import com.example.hms.hotel_management_system.exception.InvalidBookingDateException;
 import com.example.hms.hotel_management_system.exception.PaymentInformationIsNullException;
 import com.example.hms.hotel_management_system.exception.RoomAlreadyBookedException;
-import com.example.hms.hotel_management_system.dto.BookingRequestDTO;
-import com.example.hms.hotel_management_system.dto.BookingResponseDTO;
-import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.request.BookingRequestDTO;
+import com.example.hms.hotel_management_system.dto.request.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.BookingResponseDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Guest;
 import com.example.hms.hotel_management_system.entity.Room;

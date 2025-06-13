@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.hms.hotel_management_system.dto.RoomRequestDTO;
-import com.example.hms.hotel_management_system.dto.RoomResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.RoomRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.RoomResponseDTO;
 import com.example.hms.hotel_management_system.entity.Room;
 import com.example.hms.hotel_management_system.exception.RoomAlreadyExistsException;
 import com.example.hms.hotel_management_system.exception.RoomNotFoundException;

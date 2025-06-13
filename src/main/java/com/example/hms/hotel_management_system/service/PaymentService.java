@@ -2,7 +2,7 @@ package com.example.hms.hotel_management_system.service;
 
 import org.springframework.http.ResponseEntity;
 
-import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.request.PaymentRequestDTO;
 
 public interface PaymentService {
     public ResponseEntity<?> createPayment(PaymentRequestDTO paymentDTO);

@@ -1,4 +1,4 @@
-package com.example.hms.hotel_management_system.dto;
+package com.example.hms.hotel_management_system.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

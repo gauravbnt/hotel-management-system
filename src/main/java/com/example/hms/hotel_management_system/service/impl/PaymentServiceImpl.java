@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
-import com.example.hms.hotel_management_system.dto.PaymentResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.PaymentResponseDTO;
 import com.example.hms.hotel_management_system.entity.Booking;
 import com.example.hms.hotel_management_system.entity.Payment;
 import com.example.hms.hotel_management_system.exception.BookingNotFoundException;

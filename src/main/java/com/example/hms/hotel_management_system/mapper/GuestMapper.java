@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.example.hms.hotel_management_system.dto.GuestRequestDTO;
-import com.example.hms.hotel_management_system.dto.GuestResponseDTO;
+import com.example.hms.hotel_management_system.dto.request.GuestRequestDTO;
+import com.example.hms.hotel_management_system.dto.response.GuestResponseDTO;
 import com.example.hms.hotel_management_system.entity.Guest;
 
 @Mapper(componentModel = "spring")

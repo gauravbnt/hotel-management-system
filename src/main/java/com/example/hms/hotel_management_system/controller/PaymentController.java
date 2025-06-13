@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.hms.hotel_management_system.dto.PaymentRequestDTO;
+import com.example.hms.hotel_management_system.dto.request.PaymentRequestDTO;
 import com.example.hms.hotel_management_system.service.PaymentService;
 
 import jakarta.validation.Valid;

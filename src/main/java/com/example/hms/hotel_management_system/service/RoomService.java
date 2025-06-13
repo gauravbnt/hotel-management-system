@@ -2,7 +2,7 @@ package com.example.hms.hotel_management_system.service;
 
 import org.springframework.http.ResponseEntity;
 
-import com.example.hms.hotel_management_system.dto.RoomRequestDTO;
+import com.example.hms.hotel_management_system.dto.request.RoomRequestDTO;
 
 public interface RoomService {
     public ResponseEntity<?> createRoom(RoomRequestDTO room);

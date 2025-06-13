@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.hms.hotel_management_system.dto.GuestRequestDTO;
+import com.example.hms.hotel_management_system.dto.request.GuestRequestDTO;
 import com.example.hms.hotel_management_system.response.SuccessResponse;
 import com.example.hms.hotel_management_system.service.GuestService;
 

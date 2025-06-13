@@ -4,7 +4,7 @@ package com.example.hms.hotel_management_system.service;
 
 import org.springframework.http.ResponseEntity;
 
-import com.example.hms.hotel_management_system.dto.BookingRequestDTO;
+import com.example.hms.hotel_management_system.dto.request.BookingRequestDTO;
 
 public interface BookingService {
     public ResponseEntity<?> createBooking(BookingRequestDTO bookingDTO);
