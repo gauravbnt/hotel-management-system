@@ -37,7 +37,6 @@ public class BookingRequestDTO {
     private BookingStatus bookingStatus;
     private BigDecimal totalAmount;
 
-
     @Valid
     private PaymentRequestDTO payment;
 }

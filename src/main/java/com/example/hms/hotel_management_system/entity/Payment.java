@@ -43,7 +43,7 @@ public class Payment {
     private String transactionId;
 
     @OneToOne
-    @JoinColumn(name="booking_id")
-    @JsonBackReference 
+    @JoinColumn(name = "booking_id")
+    @JsonBackReference
     private Booking booking;
 }

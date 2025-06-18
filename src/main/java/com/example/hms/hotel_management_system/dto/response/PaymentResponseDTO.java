@@ -21,5 +21,4 @@ public class PaymentResponseDTO {
     private String transactionId;
     private String roomNumber;
     private String email;
-
 }

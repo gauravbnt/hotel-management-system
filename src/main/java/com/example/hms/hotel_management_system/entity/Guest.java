@@ -16,10 +16,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @NoArgsConstructor
@@ -35,17 +35,17 @@ public class Guest {
 
     @Column(unique = true)
     private String email;
-    
+
     @Column(unique = true)
     private String phoneNumber;
-    
+
     private String address;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy ="guest",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("guest-booking")
     List<Booking> booking;
 }

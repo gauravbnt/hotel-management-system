@@ -5,9 +5,13 @@ import java.util.UUID;
 
 import com.example.hms.hotel_management_system.enums.RoomType;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoomResponseDTO {
 
     private UUID id;

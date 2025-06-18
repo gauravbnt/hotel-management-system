@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,18 +48,17 @@ public class Booking {
     private RoomType roomType;
 
     @ManyToOne
-    @JoinColumn(name="guest_id")
+    @JoinColumn(name = "guest_id")
     @JsonBackReference("guest-booking")
     private Guest guest;
 
     @ManyToOne
-    @JoinColumn(name="room_id")
+    @JoinColumn(name = "room_id")
     @JsonBackReference("room-booking")
     private Room room;
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference 
+    @JsonManagedReference
     private Payment payment;
 
 }
-
