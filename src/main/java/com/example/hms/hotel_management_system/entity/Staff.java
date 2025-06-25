@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+// @Entity
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class Staff {
     private String email;
 
     private String phoneNumber;
-    
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

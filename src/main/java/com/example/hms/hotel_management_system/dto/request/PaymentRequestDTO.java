@@ -22,7 +22,7 @@ public class PaymentRequestDTO {
     private PaymentMethod paymentMethod;
 
     @NotBlank(message = "Transaction ID is required")
-   private String transactionId;
+    private String transactionId;
 
     @NotBlank(message = "Room number is required")
     private String roomNumber;

@@ -2,9 +2,14 @@ package com.example.hms.hotel_management_system.dto.response;
 
 import java.sql.Timestamp;
 import java.util.UUID;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GuestResponseDTO {
 
     private UUID id;

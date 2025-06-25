@@ -1,7 +1,11 @@
 plugins {
 	id 'java'
+    id 'org.sonarqube' version '4.4.1.3373' 
+
 	id 'org.springframework.boot' version '3.4.5'
 	id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+
 }
 
 group = 'com.example.hms'
@@ -38,7 +42,13 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0'
 
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
+	testImplementation 'org.mockito:mockito-core:5.12.0'
+
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -46,4 +56,18 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = "0.8.10" // ✅ use latest compatible version
+}
+
+jacocoTestReport {
+    dependsOn test // tests must run before report is generated
+
+    reports {
+        xml.required = true   // ✅ required by SonarQube
+        html.required = false
+        csv.required = false
+    }
 }

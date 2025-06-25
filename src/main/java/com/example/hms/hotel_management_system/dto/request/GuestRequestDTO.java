@@ -29,7 +29,6 @@ public class GuestRequestDTO {
     private String phoneNumber;
 
     @NotBlank(message = "Address is required")
-    @Size(min = 5, message = "Address should be at least 5 characters")
     private String address;
 
 }

@@ -29,7 +29,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    
+
     @Column(unique = true)
     private String roomNumber;
 
@@ -37,11 +37,11 @@ public class Room {
     private RoomType roomType;
 
     private BigDecimal pricePerNight;
-    private Boolean isAvailable=true;
+    private Boolean isAvailable = true;
     private Integer floorNumber;
     private String description;
 
-    @OneToMany(mappedBy ="room", cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("room-booking")
     List<Booking> booking;
 
