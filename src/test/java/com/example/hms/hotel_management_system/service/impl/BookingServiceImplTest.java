@@ -47,7 +47,6 @@ class BookingServiceImplTest {
 
     @Test
     void testCreateBooking_Success() {
-        // Prepare data
         BookingRequestDTO bookingRequest = new BookingRequestDTO(); 
         bookingRequest.setEmail("test@example.com");
         bookingRequest.setRoomType(RoomType.SINGLE);

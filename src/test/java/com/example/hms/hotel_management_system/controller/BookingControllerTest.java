@@ -60,7 +60,7 @@ public class BookingControllerTest {
                 "101",
                 RoomType.SINGLE,
                 BookingStatus.BOOKED,
-                new BigDecimal("5000"),
+                new BigDecimal(5000),
                 payment
         );
     }
