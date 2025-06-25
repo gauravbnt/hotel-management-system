@@ -1,0 +1,19 @@
+package com.example.hotelmanagementsystem.repository;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.hotelmanagementsystem.entity.Room;
+import com.example.hotelmanagementsystem.enums.RoomType;
+
+@Repository
+public interface RoomRepository extends JpaRepository<Room,UUID>{
+    Room findRoomByRoomNumber(String roomNumber);
+    Boolean existsByRoomNumber(String roomNumber);
+    List<Room> findByIsAvailable(Boolean isAvailable);
+    List<Room> findByRoomTypeAndIsAvailableTrue(RoomType roomType);
+
+}
