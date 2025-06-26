@@ -21,7 +21,7 @@ A full-stack **Hotel Management System** built using **Spring Boot** and **Gradl
 
 | Category     | Technology           |
 |--------------|----------------------|
-| Language     | Java 17+             |
+| Language     | Java 21              |
 | Framework    | Spring Boot          |
 | Build Tool   | **Gradle**           |
 | Database     |  PostgreSQL          |
@@ -112,8 +112,8 @@ hotel-management-system/
 
 ### ✅ Prerequisites
 
-- Java 17 or later
-- Gradle 7+
+- Java 21
+- Gradle 8
 - Postman or Swagger UI
 
 ### 📦 Build & Run
