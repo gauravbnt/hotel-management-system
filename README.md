@@ -32,77 +32,33 @@ A full-stack **Hotel Management System** built using **Spring Boot** and **Gradl
 
 ---
 
-## 📂 Project Structure
+## 📂 Project flow
 
 ```
+                    +-------------------------+
+                    |  Guest Enters Booking   |
+                    +-------------------------+
+                                |
+                                v
+                    +----------------------------+
+                    | Check Room Availability    |
+                    +----------------------------+
+                                |
+                                v
+                    +----------------------------+
+                    | Calculate Total Price      |
+                    +----------------------------+
+                                |
+                                v
+                    +----------------------------+
+                    | Create Booking Record      |
+                    +----------------------------+
+                                |
+                                v
+                    +----------------------------+
+                    | Return Booking Confirmation|
+                    +----------------------------+
 
-hotel-management-system/
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/hms/
-│   │   │   ├── controller/
-│   │   │   │   ├── GuestController.java
-│   │   │   │   ├── RoomController.java
-│   │   │   │   ├── BookingController.java
-│   │   │   │   └── PaymentController.java
-│   │   │   ├── dto/
-│   │   │   │   ├── request/
-│   │   │   │   │   ├── GuestRequestDTO.java
-│   │   │   │   │   ├── RoomRequestDTO.java
-│   │   │   │   │   ├── BookingRequestDTO.java
-│   │   │   │   │   └── PaymentRequestDTO.java
-│   │   │   │   └── response/
-│   │   │   │       ├── GuestResponseDTO.java
-│   │   │   │       ├── RoomResponseDTO.java
-│   │   │   │       ├── BookingResponseDTO.java
-│   │   │   │       └── PaymentResponseDTO.java
-│   │   │   ├── entity/
-│   │   │   │   ├── Guest.java
-│   │   │   │   ├── Room.java
-│   │   │   │   ├── Booking.java
-│   │   │   │   └── Payment.java
-│   │   │   ├── enums/
-│   │   │   │   ├── RoomType.java
-│   │   │   │   ├── PaymentMethod.java
-│   │   │   │   └── BookingType.java
-│   │   │   ├── exception/
-│   │   │   │   ├── GlobalExceptionHandler.java
-│   │   │   │   ├── GuestNotFoundException.java
-│   │   │   │   ├── RoomNotFoundException.java
-│   │   │   │   ├── BookingNotFoundException.java
-│   │   │   │   └── PaymentException.java
-│   │   │   ├── repository/
-│   │   │   │   ├── GuestRepository.java
-│   │   │   │   ├── RoomRepository.java
-│   │   │   │   ├── BookingRepository.java
-│   │   │   │   └── PaymentRepository.java
-│   │   │   ├── service/
-│   │   │   │   ├── GuestService.java
-│   │   │   │   ├── GuestServiceImpl.java
-│   │   │   │   ├── RoomService.java
-│   │   │   │   ├── RoomServiceImpl.java
-│   │   │   │   ├── BookingService.java
-│   │   │   │   ├── BookingServiceImpl.java
-│   │   │   │   ├── PaymentService.java
-│   │   │   │   └── PaymentServiceImpl.java
-│   │   │   └── HotelManagementSystemApplication.java
-│   │   └── resources/
-│   │       ├── application.properties
-│   │       └── data.sql (optional)
-│   └── test/
-│       └── java/com/example/hms/
-│           ├── controller/
-│           │   ├── GuestControllerTest.java
-│           │   ├── RoomControllerTest.java
-│           │   ├── BookingControllerTest.java
-│           │   └── PaymentControllerTest.java
-│           └── service/
-│               ├── GuestServiceTest.java
-│               ├── RoomServiceTest.java
-│               ├── BookingServiceTest.java
-│               └── PaymentServiceTest.java
-├── build.gradle
-├── settings.gradle
 
 ````
 
@@ -139,6 +95,7 @@ cd hotel-management-system
 | Method | Endpoint          | Description             |
 | ------ | ----------------- | ----------------------- |
 | POST   | `/guests`         | Register a new guest    |
+| GET   | `/guests`          | Get all guests          |
 | GET    | `/guests/{email}` | Get guest by email      |
 | PUT    | `/guests/{email}` | Update guest details    |
 | DELETE | `/guests/{email}` | Delete a guest by email |
@@ -148,8 +105,11 @@ cd hotel-management-system
 | Method | Endpoint             | Description          |
 | ------ | -------------------- | -------------------- |
 | POST   | `/rooms`             | Add a new room       |
+| GET    | `/rooms/{roomNumber}`| view a room by   roomnumber             |                          
+| PUT    | `/rooms/{roomNumber}`| update a room by  roomnumber   |                             
 | GET    | `/rooms`             | View all rooms       |
-| GET    | `/rooms/type/{type}` | Filter rooms by type |
+| GET    |`/rooms/{isAvaialble}`| Filter rooms by      availability|
+
 
 ### 📅 Booking APIs
 
@@ -165,6 +125,8 @@ cd hotel-management-system
 | ------ | --------------------------- | ---------------------------- |
 | POST   | `/payments`                 | Make a payment for a booking |
 | GET    | `/payments/{transactionId}` | View payment details         |
+| PUT    | `/payments/{transactionId}` | Update payment details       |
+
 
 ---
 
