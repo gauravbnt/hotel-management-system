@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+/*@SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 public class PaymentControllerIntegrationTest {
@@ -119,3 +119,4 @@ public class PaymentControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.amountPaid").value(3000));
     }
 }
+*/

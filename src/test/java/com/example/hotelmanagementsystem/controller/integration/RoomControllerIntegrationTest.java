@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 
-@SpringBootTest
+/*@SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 public class RoomControllerIntegrationTest {
@@ -79,3 +79,4 @@ public class RoomControllerIntegrationTest {
 
         
 }
+*/

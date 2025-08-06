@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+/*@SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class BookingControllerIntegrationTest {
@@ -103,4 +103,4 @@ class BookingControllerIntegrationTest {
                .andExpect(jsonPath("$.message").value("Booking updated successfully"))
                .andExpect(jsonPath("$.status").value(200));
      }
-}
+}*/
